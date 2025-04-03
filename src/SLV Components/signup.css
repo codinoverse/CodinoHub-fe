@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.signup{
+    
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+
+
+.container h1 {
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.container {
+    max-width: 400px;
+    width: 100%;
+}
+
+.signup-form {
+    border-radius: 8px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.fields {
+    background-color: #ffffff2a;
+    border-radius: 20px;
+    width: 25em;
+    height: 2.8em;
+    text-align: center;
+    border: none;
+    color: white;
+}
+
+input::placeholder {
+    color: rgb(253, 253, 254);
+    font-size: 15px;
+    opacity: 55%;
+}
+
+
+
+
+
+.signup-form h4 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+
+.form-control {
+    border-radius: 5px;
+}
+
+.btn-signup {
+    width: 100%;
+    background-color: #094a60;
+    padding-inline: 15px;
+    border: none;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 8px;
+    font-size: 14px;
+    width: auto;
+    text-align: center;
+    justify-items: center;
+    color: rgb(255, 255, 255);
+    margin-left: 25px;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.btn-signup:hover {
+    background-color: #113847;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-link a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

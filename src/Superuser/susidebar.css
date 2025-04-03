@@ -1,0 +1,25 @@
+.sidebar-main {
+    background-color: rgb(6, 133, 147);
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: block;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+    width: 200px;
+  }
+  
+  .dropdown-content li {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
