@@ -18,9 +18,9 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (user.firstname && user.lastname && user.username && user.email && user.company) {
+        if (user.firstname && user.lastname && user.username && user.email ) {
             onCreateUser(user);
-            setUser({ firstname: "", lastname: "", username: "", email: "", company: "", description: "" });
+            setUser({ firstname: "", lastname: "", username: "", email: "" });
             onClose();
         } else {
             alert("All fields except description are required!");
@@ -51,14 +51,6 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
                             <tr>
                                 <td><label>Email ID:</label></td>
                                 <td><input type="email" name="email" value={user.email} onChange={handleChange} required /></td>
-                            </tr>
-                            <tr>
-                                <td><label>Company Name:</label></td>
-                                <td><input type="text" name="company" value={user.company} onChange={handleChange} required /></td>
-                            </tr>
-                            <tr>
-                                <td><label>Description:</label></td>
-                                <td><textarea name="description" value={user.description} onChange={handleChange} /></td>
                             </tr>
                         </tbody>
                     </table>

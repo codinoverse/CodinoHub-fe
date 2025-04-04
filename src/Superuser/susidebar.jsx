@@ -1,87 +1,120 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import './susidebar.css'
+import './susidebar.css';
 import { useState } from "react";
 
-const Sidebar = ({ onCreateUser, users, onSelectUser, onAssignData }) => {
+const Sidebar = ({
+    onCreateUser,
+    users,
+    onSelectUser,
+    onAssignData,
+    assignedUsersByRoleType = {}
+}) => {
+    const [openDropdown, setOpenDropdown] = useState(null);
 
-    const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
-    const [isRoleTypeDropdownOpen, setRoleTypeDropdownOpen] = useState(false);
-    const [isRoleDropdownOpen, setRoleDropdownOpen] = useState(false);
-    const [isPermissionDropdownOpen, setPermissionDropdownOpen] = useState(false);
+    const toggleDropdown = (name) => {
+        setOpenDropdown(openDropdown === name ? null : name);
+    };
 
-
+    const roleTypes = [
+        "Developer",
+        "QA",
+        "DevOps",
+        "Data",
+        "Security",
+        "Product",
+        "AI Expert",
+        "Custom Team",
+        "NEWBEE/INTERN"
+    ];
 
     return (
-        <>
-            <div className="col-md-3 col-lg-2 sidebar-main text-white p-3 min-vh-100">
-                <h5 className="text-center">User Management</h5>
-                <hr />
-                <div className="sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="col-md-3 col-lg-2 sidebar-main text-white p-3 min-vh-100">
+            <h5 className="text-center mb-4">User Management</h5>
+            <div className="sidebar d-flex flex-column gap-3">
 
-                    <button onClick={onCreateUser}>Create User</button>
-                    <div className="dropdown">
-                        <button onClick={() => setUserDropdownOpen(!isUserDropdownOpen)}>
-                            Create User +
+                <button className="sidebar-btn" onClick={onCreateUser}>Create User +</button>
+
+                {/* Users Dropdown */}
+                <div className="dropdown">
+                    <button className="sidebar-btn" onClick={() => toggleDropdown("users")}>
+                        Users ▾
+                    </button>
+                    {openDropdown === "users" && (
+                        <ul className="dropdown-content">
+                            {users.map((user, index) => (
+                                <li key={index} onDoubleClick={() => onSelectUser(user)}>
+                                    {user.username}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+
+                {/* Role Type Dropdown */}
+                <div className="dropdown">
+                    <button className="sidebar-btn" onClick={() => toggleDropdown("roleType")}>
+                        Role Type ▾
+                    </button>
+                    {openDropdown === "roleType" && (
+                        <ul className="dropdown-content">
+                            {roleTypes.map((type, idx) => (
+                                <li key={idx}>{type}</li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+
+                {/* Roles Dropdown */}
+                <div className="dropdown">
+                    <button className="sidebar-btn" onClick={() => toggleDropdown("roles")}>
+                        Roles ▾
+                    </button>
+                    {openDropdown === "roles" && (
+                        <ul className="dropdown-content">
+                            <li>BE</li>
+                            <li>FE</li>
+                            <li>Tester</li>
+                        </ul>
+                    )}
+                </div>
+
+                {/* Permissions Dropdown */}
+                <div className="dropdown">
+                    <button className="sidebar-btn" onClick={() => toggleDropdown("permissions")}>
+                        Permissions ▾
+                    </button>
+                    {openDropdown === "permissions" && (
+                        <ul className="dropdown-content">
+                            <li>Write</li>
+                            <li>Read</li>
+                            <li>Execute</li>
+                        </ul>
+                    )}
+                </div>
+
+                {/* Role Type Specific User Dropdowns */}
+                {roleTypes.map((type, idx) => (
+                    <div className="dropdown" key={idx}>
+                        <button className="sidebar-btn" onClick={() => toggleDropdown(type)}>
+                            {type} ▾
                         </button>
-                        {isUserDropdownOpen && (
-                            <ul>
-                                {users.map((user, index) => (
-                                    <li key={index} onDoubleClick={() => onSelectUser(user)}>
-                                        {user.username}
-                                    </li>
+                        {openDropdown === type && (
+                            <ul className="dropdown-content">
+                                {(assignedUsersByRoleType[type] || []).map((user, index) => (
+                                    <li key={index}>{user.username}</li>
                                 ))}
                             </ul>
                         )}
                     </div>
-                    {/* Role Type Dropdown */}
-                    <div className="dropdown">
-                        <button onClick={() => setRoleTypeDropdownOpen(!isRoleTypeDropdownOpen)}>
-                            Role Type
-                        </button>
-                        {isRoleTypeDropdownOpen && (
-                            <ul>
-                                <li>Developer</li>
-                                <li>QA</li>
-                            </ul>
-                        )}
-                    </div>
+                ))}
 
-                    {/* Roles Dropdown */}
-                    <div className="dropdown">
-                        <button onClick={() => setRoleDropdownOpen(!isRoleDropdownOpen)}>
-                            Roles
-                        </button>
-                        {isRoleDropdownOpen && (
-                            <ul>
-                                <li>BE</li>
-                                <li>FE</li>
-                                <li>Tester</li>
-                            </ul>
-                        )}
-                    </div>
-
-                    {/* Permissions Dropdown */}
-                    <div className="dropdown">
-                        <button onClick={() => setPermissionDropdownOpen(!isPermissionDropdownOpen)}>
-                            Permissions
-                        </button>
-                        {isPermissionDropdownOpen && (
-                            <ul>
-                                <li>Write</li>
-                                <li>Read</li>
-                                <li>Execute</li>
-                            </ul>
-                        )}
-                    </div>
-
-                    {/* Assign Data */}
-                    <button onClick={onAssignData}>Assign Data</button>
-                </div>
+                <button className="sidebar-btn assign-btn" onClick={onAssignData}>
+                    Assign Data
+                </button>
             </div>
-        </>
+        </div>
     );
 };
-
 
 export default Sidebar;

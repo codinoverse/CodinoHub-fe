@@ -1,0 +1,112 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  /* Modal Container */
+  .modal-container {
+    background-color: #ffffff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Heading */
+  .modal-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #068593;
+    font-weight: bold;
+  }
+  
+  /* Table Styling */
+  .assign-form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .assign-form-table td {
+    padding: 10px;
+    vertical-align: middle;
+  }
+  
+  .assign-form-table label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .assign-form-table select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s;
+  }
+  
+  .assign-form-table select:focus {
+    outline: none;
+    border-color: #068593;
+  }
+  
+  /* Buttons */
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .modal-actions button {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .modal-actions button[type="submit"] {
+    background-color: #068593;
+    color: white;
+  }
+  
+  .modal-actions button[type="submit"]:hover {
+    background-color: #056c76;
+    transform: scale(1.02);
+  }
+  
+  .modal-actions button[type="button"] {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .modal-actions button[type="button"]:hover {
+    background-color: #ddd;
+    transform: scale(1.02);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

@@ -3,16 +3,17 @@ import "./superuser.css";
 import Navbar from "./sunavbar";
 import Sidebar from "./susidebar";
 import UserModal from "./usermodal";
-import AssignDataModal from "./assigndatamodel"; 
-import ProfileModal from "./profilemodal"; 
+import AssignDataModal from "./assigndatamodel";
+import ProfileModal from "./profilemodal";
 
 const SuperUser = () => {
     const [isUserModalOpen, setUserModalOpen] = useState(false);
     const [isAssignDataModalOpen, setAssignDataModalOpen] = useState(false);
     const [users, setUsers] = useState([]);
-    const [assignedUsers, setAssignedUsers] = useState([]); // Store assigned users
+    const [assignedUsers, setAssignedUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [showProfileModal, setShowProfileModal] = useState(false); // Profile modal state
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [assignedUsersByRoleType, setAssignedUsersByRoleType] = useState({});
 
     const handleCreateUser = (user) => {
         setUsers([...users, user]);
@@ -22,9 +23,41 @@ const SuperUser = () => {
         setSelectedUser(user);
     };
 
-    const handleAssignUser = (assignedData) => {
-        setAssignedUsers([...assignedUsers, assignedData]); // Store assigned user data
-        setAssignDataModalOpen(false); // Close modal after assignment
+    const handleAssignUser = (assignment) => {
+        // Update assigned users by role type (for Sidebar)
+        setAssignedUsersByRoleType((prev) => {
+            const updated = { ...prev };
+            if (!updated[assignment.roleType]) {
+                updated[assignment.roleType] = [];
+            }
+
+            const isAlreadyAssigned = updated[assignment.roleType].some(
+                (user) => user.username === assignment.username
+            );
+
+            if (!isAlreadyAssigned) {
+                updated[assignment.roleType].push({
+                    username: assignment.username,
+                    role: assignment.role,
+                    permission: assignment.permission
+                });
+            }
+
+            return updated;
+        });
+
+        // Update general assigned users list (for Assigned Users Table)
+        setAssignedUsers((prev) => {
+            const exists = prev.some(
+                (u) => u.username === assignment.username && u.roleType === assignment.roleType
+            );
+
+            if (!exists) {
+                return [...prev, assignment];
+            }
+
+            return prev;
+        });
     };
 
     return (
@@ -39,6 +72,7 @@ const SuperUser = () => {
                         onAssignData={() => setAssignDataModalOpen(true)}
                         users={users}
                         onSelectUser={handleSelectUser}
+                        assignedUsersByRoleType={assignedUsersByRoleType}
                     />
 
                     {/* Modals */}
@@ -55,10 +89,10 @@ const SuperUser = () => {
                         onAssignUser={handleAssignUser}
                     />
 
-                    {/* ✅ Profile Modal Added Here ✅ */}
-                    <ProfileModal 
-                        show={showProfileModal} 
-                        onClose={() => setShowProfileModal(false)} 
+                    {/* Profile Modal */}
+                    <ProfileModal
+                        show={showProfileModal}
+                        onClose={() => setShowProfileModal(false)}
                     />
 
                     {/* Assigned Users Table */}
@@ -72,7 +106,6 @@ const SuperUser = () => {
                                             <th>Username</th>
                                             <th>Role Type</th>
                                             <th>Role</th>
-                                            <th>Permission</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,7 +114,6 @@ const SuperUser = () => {
                                                 <td>{assigned.username}</td>
                                                 <td>{assigned.roleType}</td>
                                                 <td>{assigned.role}</td>
-                                                <td>{assigned.permission}</td>
                                             </tr>
                                         ))}
                                     </tbody>

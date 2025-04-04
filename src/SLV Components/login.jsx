@@ -2,26 +2,64 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './login.css';
 import './common.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         username: "",
-        password: ""
+        password: "",
+        userType: ""
     });
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Submitted", formData);
+
+        if (!formData.userType) {
+            alert("Please select a user type.");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://192.168.1.12:9000/login", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: formData.username,
+                    password: formData.password,
+                    userType: formData.userType  
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("Login Success:", data);
+                if (formData.userType === "superuser") {
+                    navigate("/superuser");
+                } else {
+                    navigate("/user");
+                }
+            } else {
+                alert(data.message || "Login failed.");
+            }
+        } catch (error) {
+            console.error("Error logging in:", error);
+            alert("Something went wrong. Please try again.");
+        }
     };
+
 
     return (
         <div className="login background">
@@ -31,12 +69,11 @@ const LoginForm = () => {
                 <div className="login-form">
                     <h4 className="text-white">Login</h4>
                     <form onSubmit={handleSubmit}>
-                        {/* username */}
+                        {/* Username */}
                         <div className="mb-3">
                             <input
                                 type="text"
                                 className="fields"
-                                id="username"
                                 name="username"
                                 placeholder="Enter your username"
                                 value={formData.username}
@@ -45,12 +82,11 @@ const LoginForm = () => {
                             />
                         </div>
 
-                        {/* password*/}
+                        {/* Password */}
                         <div className="mb-3">
                             <input
                                 type="password"
                                 className="fields"
-                                id="password"
                                 name="password"
                                 placeholder="Enter your valid password"
                                 value={formData.password}
@@ -59,25 +95,43 @@ const LoginForm = () => {
                             />
                         </div>
 
-                        <div className="container login-container" >
+                        {/* User Type Selection */}
+                        <div className="container login-container">
                             <div>
-                                <input type="checkbox" />
-                                <label className="text-white">SuperUser</label>
+                                <input
+                                    type="radio"
+                                    id="superUser"
+                                    name="userType"
+                                    value="superuser"
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <label htmlFor="superUser" className="text-white">SuperUser</label>
                             </div>
 
                             <div>
-                                <input type="checkbox" />
-                                <label className="text-white">User</label>
+                                <input
+                                    type="radio"
+                                    id="user"
+                                    name="userType"
+                                    value="user"
+                                    onChange={handleChange}
+                                />
+                                <label htmlFor="user" className="text-white">User</label>
                             </div>
-                            <Link to="/superuser"><button type="submit" className=" btn-signup">Login</button></Link>
+
+                            <button type="submit" className="btn-signup">Login</button>
                         </div>
-
                     </form>
+
                     <div className="login-link">
-                        <p className="text-white">Don't have an account? <a href={"/signup"}>Signup here</a></p>
+                        <p className="text-white">
+                            Don't have an account? <Link to="/signup">Signup here</Link>
+                        </p>
                     </div>
+
                     <div>
-                        <Link>term & conditions</Link>
+                        <Link className="text-white">Terms & Conditions</Link>
                     </div>
                 </div>
             </div>
