@@ -18,7 +18,7 @@ const ProfileModal = ({ show, onClose }) => {
         setIsEditing(false); // Exit edit mode after saving
     };
 
-    if (!show) return null; 
+    if (!show) return null; // If not visible, return nothing
 
     return (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
