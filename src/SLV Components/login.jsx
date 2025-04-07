@@ -23,6 +23,7 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submitting Form", formData);
 
         if (!formData.userType) {
             alert("Please select a user type.");
@@ -30,7 +31,7 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await fetch("http://192.168.1.12:9000/login", {
+            const response = await fetch("http://192.168.1.17:9000/login", {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -38,17 +39,35 @@ const LoginForm = () => {
                 body: JSON.stringify({
                     username: formData.username,
                     password: formData.password,
-                    userType: formData.userType  
+                    userType: formData.userType
                 })
             });
 
             const data = await response.json();
+            console.log('Login Response Data', data);
 
             if (response.ok) {
                 console.log("Login Success:", data);
                 if (formData.userType === "superuser") {
-                    navigate("/superuser");
+                    const superUserResponse = await fetch(`http://192.168.1.17:9000/superUser/getSuperUser?username=${formData.username}`);
+                    const superUserData = await superUserResponse.json();
+                    console.log('SuperUser Data:', superUserData);
+
+                    if (superUserResponse.ok) {
+                        const superUserDetails = {
+                            username: superUserData.username,
+                            email : superUserData.email,
+                            companyName: superUserData.companyName
+                        };
+                        localStorage.setItem("userDetails", JSON.stringify(superUserDetails));
+                        navigate("/superuser");
+                    } else {
+                        alert(superUserData.message || "Failed to fetch superuser data.");
+                    }
                 } else {
+                    localStorage.setItem("userDetails", JSON.stringify({
+                        username: data.username
+                    }));
                     navigate("/user");
                 }
             } else {
@@ -59,7 +78,6 @@ const LoginForm = () => {
             alert("Something went wrong. Please try again.");
         }
     };
-
 
     return (
         <div className="login background">

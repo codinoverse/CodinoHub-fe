@@ -28,7 +28,7 @@ const SignupForm = () => {
         console.log("Sending data to backend:", formData); //this console is used for test
 
         try {
-            const response = await fetch("http://192.168.1.12:9000/createSuperUser", {
+            const response = await fetch("http://192.168.1.17:9000/superUser/createSuperUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -7,9 +7,7 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
         firstname: "",
         lastname: "",
         username: "",
-        email: "",
-        company: "",
-        description: ""
+        email: ""
     });
 
     const handleChange = (e) => {

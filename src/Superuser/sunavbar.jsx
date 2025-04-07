@@ -7,13 +7,20 @@ import DropdownSelect from './dropdown';
 import ProfileDropdown from './profiledropdown';
 
 const Navbar = ({ onViewProfile }) => {
+    // Retrieve user details from localStorage
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+    // Default values in case the data is not yet available
+    const companyName = userDetails ? userDetails.companyName : "Default Company";
+    const username = userDetails ? userDetails.username : "Guest";
+
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 {/* Left Section */}
                 <div className="d-flex align-items-center">
                     <Link to="/" className="logo-link">CodinoHub</Link>
-                    <span className="company-name">Company Name</span>
+                    <span className="company-name">{companyName}</span>
                 </div>
 
                 {/* Navbar Toggle */}
@@ -38,7 +45,7 @@ const Navbar = ({ onViewProfile }) => {
 
                         {/* User Info */}
                         <div className="d-flex align-items-center">
-                            <span className="username">Nived</span>
+                            <span className="username">{username}</span>
                             <span className="divider mx-2">|</span>
                             <DropdownSelect />
                         </div>
