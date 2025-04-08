@@ -5,8 +5,11 @@ import { useState } from "react";
 
 const Sidebar = ({
     onCreateUser,
+    onCreateSuperUser,
+    superusers,
     users,
     onSelectUser,
+    onSelectSuperUser,
     onAssignData,
     assignedUsersByRoleType = {}
 }) => {
@@ -32,6 +35,25 @@ const Sidebar = ({
         <div className="col-md-3 col-lg-2 sidebar-main text-white p-3 min-vh-100">
             <h5 className="text-center mb-4">User Management</h5>
             <div className="sidebar d-flex flex-column gap-3">
+
+
+                <button className="sidebar-btn" onClick={onCreateSuperUser}>Create SuperUser +</button>
+
+                {/* superUsers Dropdown */}
+                <div className="dropdown">
+                    <button className="sidebar-btn" onClick={() => toggleDropdown("superusers")}>
+                        SuperUsers ▾
+                    </button>
+                    {openDropdown === "superusers" && (
+                        <ul className="dropdown-content">
+                            {superusers.map((superuser, index) => (
+                                <li key={index} onDoubleClick={() => onSelectSuperUser(superuser)}>
+                                    {superuser.username}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
 
                 <button className="sidebar-btn" onClick={onCreateUser}>Create User +</button>
 

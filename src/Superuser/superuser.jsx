@@ -5,15 +5,32 @@ import Sidebar from "./susidebar";
 import UserModal from "./usermodal";
 import AssignDataModal from "./assigndatamodel";
 import ProfileModal from "./profilemodal";
+import SuperUserModal from "./superusermodal";
 
 const SuperUser = () => {
     const [isUserModalOpen, setUserModalOpen] = useState(false);
+    const [isSuperUserModalOpen, setSuperUserModalOpen] = useState(false);
+
     const [isAssignDataModalOpen, setAssignDataModalOpen] = useState(false);
     const [users, setUsers] = useState([]);
+    const [superusers, setsuperUsers] = useState([]);
+
     const [assignedUsers, setAssignedUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedSuperUser, setSelectedSuperUser] = useState(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [assignedUsersByRoleType, setAssignedUsersByRoleType] = useState({});
+
+
+    const handleCreateSuperUser = (superuser) => {
+        setsuperUsers([...superusers, superuser]);
+    };
+
+
+    const handleSelectSuperUser = (superuser) => {
+        setsuperUsers([...superusers, superUser])
+    }
+
 
     const handleCreateUser = (user) => {
         setUsers([...users, user]);
@@ -69,8 +86,11 @@ const SuperUser = () => {
                     {/* Sidebar Component */}
                     <Sidebar
                         onCreateUser={() => setUserModalOpen(true)}
+                        onCreateSuperUser={() => setSuperUserModalOpen(true)}
                         onAssignData={() => setAssignDataModalOpen(true)}
                         users={users}
+                        superusers={superusers}
+                        onSelectSuperUser={handleSelectSuperUser}
                         onSelectUser={handleSelectUser}
                         assignedUsersByRoleType={assignedUsersByRoleType}
                     />
@@ -80,6 +100,12 @@ const SuperUser = () => {
                         isOpen={isUserModalOpen}
                         onClose={() => setUserModalOpen(false)}
                         onCreateUser={handleCreateUser}
+                    />
+                    
+                     <SuperUserModal
+                        isOpen={isSuperUserModalOpen}
+                        onClose={() => setSuperUserModalOpen(false)}
+                        onCreateSuperUser={handleCreateSuperUser}
                     />
 
                     <AssignDataModal
