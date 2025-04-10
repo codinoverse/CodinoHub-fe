@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-.signup{
-    
+.signup {
     background-size: cover;
     font-family: 'Arial', sans-serif;
     height: 100vh;
@@ -12,15 +11,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
-
-
-.container h1 {
+/* .container h1 {
     text-align: center;
-    color: white;
+    color: rgb(8, 107, 143);
     font-weight: 700;
     font-size: 50px;
-}
+} */
 
 .container {
     max-width: 400px;
@@ -31,6 +27,7 @@
     border-radius: 8px;
     margin-top: 50px;
     text-align: center;
+
 }
 
 .fields {
@@ -70,10 +67,10 @@ input::placeholder {
     background-color: #094a60;
     padding-inline: 15px;
     border: none;
-    padding-top: 2px;
+    padding-top: 5px;
     padding-bottom: 2px;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 3px;
+    font-size: 18px;
     width: auto;
     text-align: center;
     justify-items: center;
@@ -105,3 +102,46 @@ input::placeholder {
 .login-link a:hover {
     text-decoration: underline;
 }
+.signup-main-container {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.078)); /* Gradient for the glossy effect */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(27, 26, 26, 0.142); 
+    backdrop-filter: blur(8px); 
+    padding: 30px;
+    z-index: 1;
+    overflow: hidden; 
+}
+
+
+
+.signup-main-container .signup-form {
+    margin-top: 30px;
+}
+
+
+.fields {
+    width: 100%;
+    padding: 12px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.fields:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.signup-main-container h1 {
+    color: #007bff; 
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+

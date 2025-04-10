@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import profileimg from "../assets/profile.png";
 
 const ProfileModal = ({ show, onClose }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [profileData, setProfileData] = useState({
-        name: "Nived",
-        email: "nived@example.com",
-        company: "CodinoHub"
+        name: "",
+        email: "",
+        company: ""
     });
+
+    // Fetch the user details from localStorage
+    useEffect(() => {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        if (userDetails) {
+            setProfileData({
+                name: userDetails.username || "Not available",
+                email: userDetails.email || "Not available",
+                company: userDetails.companyName || "Not available"
+            });
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -16,6 +28,7 @@ const ProfileModal = ({ show, onClose }) => {
 
     const handleSave = () => {
         setIsEditing(false); // Exit edit mode after saving
+        localStorage.setItem("userDetails", JSON.stringify(profileData)); // Save the updated details in localStorage
     };
 
     if (!show) return null; // If not visible, return nothing

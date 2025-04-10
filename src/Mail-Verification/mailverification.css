@@ -1,0 +1,87 @@
+.Verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color:  rgb(7, 109, 135);
+}
+
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    color: rgb(7, 109, 135);
+}
+.emailCard {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 0, 150, 0.2), rgba(0, 229, 255, 0.2), rgba(0, 255, 128, 0.2));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+.logo {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.headerText {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: start;
+}
+
+.thankyou {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-align: start;
+}
+
+.verificationText {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: start;
+}
+
+.activateButton {
+    background-color: rgb(7, 109, 135);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.activateButton:hover {
+    background-color: rgb(5, 90, 115);
+    transform: scale(1.03);
+}
+
+.didNotCreate {
+    font-size: 0.9rem;
+    margin-top: 20px;
+    color: #ccc;
+    text-align: start;
+}
+
+.contact {
+    text-align: start;
+    font-size: 15px;
+}

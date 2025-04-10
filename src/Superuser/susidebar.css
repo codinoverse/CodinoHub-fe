@@ -1,25 +1,60 @@
 .sidebar-main {
-    background-color: rgb(6, 133, 147);
+  background-color: rgb(6, 133, 147);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  width: auto;
+}
+
+.assign-btn,
+.sidebar-btn {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  padding: 5px;
+  width: 15.4em;
+  text-align: left;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  padding-left: 25px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.sidebar-btn:hover {
+  background-color: #e3f6f8;
+  transform: scale(1.02);
+  color: #04545b;
+}
+
+.sidebar-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(6, 133, 147, 0.3);
+}
+
+.dropdown-content {
+  margin-top: 5px;
+  background-color: white;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+
+.dropdown-content li {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-content li:hover {
+  background-color: #f1f1f1;
 }
 
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: block;
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    list-style: none;
-    width: 200px;
-  }
-  
-  .dropdown-content li {
-    padding: 5px;
-    cursor: pointer;
-  }
-  
+
+.assign-btn:hover {
+  background-color: #ffffff;
+  color: #08404b;
+}

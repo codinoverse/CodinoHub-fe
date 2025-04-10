@@ -1,29 +1,64 @@
-// UserModal.jsx
 import React, { useState } from "react";
-import "./UserModal.css"; // External CSS file
+import "./UserModal.css";
 
 const UserModal = ({ isOpen, onClose, onCreateUser }) => {
     const [user, setUser] = useState({
-        firstname: "",
-        lastname: "",
+        firstName: "",
+        lastName: "",
         username: "",
-        email: "",
-        company: "",
-        description: ""
+        email: ""
     });
+
+    const createdBy = JSON.parse(localStorage.getItem('userDetails'))?.username || '';
 
     const handleChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (user.firstname && user.lastname && user.username && user.email && user.company) {
-            onCreateUser(user);
-            setUser({ firstname: "", lastname: "", username: "", email: "", company: "", description: "" });
-            onClose();
+        if (user.firstName && user.lastName && user.username && user.email && createdBy) {
+            try {
+                const userData = {
+                    ...user,
+                    createdBy: createdBy
+                };
+                const response = await fetch('http://192.168.1.17:9000/user/createUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+                if (response.ok) {
+                    const text = await response.text();
+                    let data = {};
+
+                    if (text) {
+                        try {
+                            data = JSON.parse(text);
+                        } catch (err) {
+                            console.error("Failed to parse JSON", err);
+                        }
+                    }
+                    alert(data.message || "User created successfully!");
+                    setUser({
+                        firstName: "",
+                        lastName: "",
+                        username: "",
+                        email: ""
+                    });
+
+                    onClose();
+                } else {
+                    const errorText = await response.text();
+                    alert(`Error: ${errorText}`);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
         } else {
-            alert("All fields except description are required!");
+            alert('All fields are required!');
         }
     };
 
@@ -38,11 +73,11 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
                         <tbody>
                             <tr>
                                 <td><label>First Name:</label></td>
-                                <td><input type="text" name="firstname" value={user.firstname} onChange={handleChange} required /></td>
+                                <td><input type="text" name="firstName" value={user.firstName} onChange={handleChange} required /></td>
                             </tr>
                             <tr>
                                 <td><label>Last Name:</label></td>
-                                <td><input type="text" name="lastname" value={user.lastname} onChange={handleChange} required /></td>
+                                <td><input type="text" name="lastName" value={user.lastName} onChange={handleChange} required /></td>
                             </tr>
                             <tr>
                                 <td><label>Username:</label></td>
@@ -51,14 +86,6 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
                             <tr>
                                 <td><label>Email ID:</label></td>
                                 <td><input type="email" name="email" value={user.email} onChange={handleChange} required /></td>
-                            </tr>
-                            <tr>
-                                <td><label>Company Name:</label></td>
-                                <td><input type="text" name="company" value={user.company} onChange={handleChange} required /></td>
-                            </tr>
-                            <tr>
-                                <td><label>Description:</label></td>
-                                <td><textarea name="description" value={user.description} onChange={handleChange} /></td>
                             </tr>
                         </tbody>
                     </table>

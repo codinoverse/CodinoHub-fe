@@ -1,5 +1,5 @@
-// AssignDataModal.jsx
 import React, { useState, useEffect } from "react";
+import './assigndatamodel.css';
 
 const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
     const [assignment, setAssignment] = useState({
@@ -11,7 +11,12 @@ const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
 
     useEffect(() => {
         if (!isOpen) {
-            setAssignment({ username: "", roleType: "Developer", role: "BE", permission: "Write" });
+            setAssignment({
+                username: "",
+                roleType: "Developer",
+                role: "BE",
+                permission: "Write"
+            });
         }
     }, [isOpen]);
 
@@ -55,6 +60,13 @@ const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
                                     <select name="roleType" value={assignment.roleType} onChange={handleChange}>
                                         <option value="Developer">Developer</option>
                                         <option value="QA">QA</option>
+                                        <option value="DevOps">DevOps</option>
+                                        <option value="Data">Data</option>
+                                        <option value="Security">Security</option>
+                                        <option value="Product">Product</option>
+                                        <option value="AI Expert">AI Expert</option>
+                                        <option value="Custom Team">Custom Team</option>
+                                        <option value="NEWBEE/INTERN">NEWBEE/INTERN</option>
                                     </select>
                                 </td>
                             </tr>
