@@ -31,7 +31,7 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await fetch("http://192.168.1.17:9000/login", {
+            const response = await fetch("http://192.168.1.12:9000/login", {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -49,14 +49,14 @@ const LoginForm = () => {
             if (response.ok) {
                 console.log("Login Success:", data);
                 if (formData.userType === "superuser") {
-                    const superUserResponse = await fetch(`http://192.168.1.17:9000/superUser/getSuperUser?username=${formData.username}`);
+                    const superUserResponse = await fetch(`http://192.168.1.12:9000/superUser/getSuperUser?username=${formData.username}`);
                     const superUserData = await superUserResponse.json();
                     console.log('SuperUser Data:', superUserData);
 
                     if (superUserResponse.ok) {
                         const superUserDetails = {
                             username: superUserData.username,
-                            email : superUserData.email,
+                            email: superUserData.email,
                             companyName: superUserData.companyName
                         };
                         localStorage.setItem("userDetails", JSON.stringify(superUserDetails));
@@ -81,7 +81,7 @@ const LoginForm = () => {
 
     return (
         <div className="login background">
-            <div className="container">
+            <div className="container login-form-main">
                 <h1>CodinoHub.</h1>
 
                 <div className="login-form">
@@ -93,7 +93,7 @@ const LoginForm = () => {
                                 type="text"
                                 className="fields"
                                 name="username"
-                                placeholder="Enter your username"
+                                placeholder="Enter username"
                                 value={formData.username}
                                 onChange={handleChange}
                                 required
@@ -106,7 +106,7 @@ const LoginForm = () => {
                                 type="password"
                                 className="fields"
                                 name="password"
-                                placeholder="Enter your valid password"
+                                placeholder="Enter valid password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 required

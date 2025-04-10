@@ -10,7 +10,7 @@ const Verification = () => {
 
     return (
         <div className="verification background">
-            <div className="container">
+            <div className="container verification-main-container">
                 <h1>CodinoHub.</h1>
 
                 <div className="signup-form">
@@ -19,8 +19,9 @@ const Verification = () => {
                     <div>
                         <p className="text-white">
                             A verification email has been sent to <strong>{email}</strong>. <br />
-                            Please check your inbox.
+                            check your inbox & Please verify your account.
                         </p>
+                       
                     </div>
 
                     <div>

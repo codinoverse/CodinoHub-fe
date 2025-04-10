@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './signup.css';
 import './common.css';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignupForm = () => {
+
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -24,28 +26,20 @@ const SignupForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        console.log("Sending data to backend:", formData); //this console is used for test
-
+        console.log("Sending data to backend:", formData);
         try {
-            const response = await fetch("http://192.168.1.17:9000/superUser/createSuperUser", {
-                method: "POST",
+            const response = await axios.post("http://192.168.1.12:9000/superUser/createSuperUser", formData, {
                 headers: {
                     "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
+                }
             });
-
-            const resText = await response.text();
             console.log("Response status:", response.status);
-            console.log("Response body:", resText);
-
-            if (response.ok) {
-                alert("User created successfully!");
-                navigate("/verification", { state: { email: formData.email } });
-
+            console.log("Response body:", response.data);
+            if (response.status === 200) {
+                alert('User created successfully!');
+                navigate('/verification', { state: { email: formData.email } });
             } else {
-                alert("username already exist");
+                alert("Username already exists");
             }
         } catch (error) {
             console.error("Error sending request:", error);
@@ -55,7 +49,7 @@ const SignupForm = () => {
 
     return (
         <div className="signup background">
-            <div className="container">
+            <div className="container signup-main-container">
                 <h1>CodinoHub.</h1>
 
                 <div className="signup-form">

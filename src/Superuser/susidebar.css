@@ -1,19 +1,22 @@
 .sidebar-main {
   background-color: rgb(6, 133, 147);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  width: auto;
 }
 
+.assign-btn,
 .sidebar-btn {
   background-color: transparent;
   color: #ffffff;
   border: none;
-  padding: 5px ;
+  padding: 5px;
   width: 15.4em;
-  margin-left: -13px;
   text-align: left;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   padding-left: 25px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 .sidebar-btn:hover {
@@ -49,10 +52,7 @@
   background-color: #f1f1f1;
 }
 
-.assign-btn {
-  background-color: #2194ab;
-  color: #ffffff;
-}
+
 
 .assign-btn:hover {
   background-color: #ffffff;

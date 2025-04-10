@@ -6,6 +6,7 @@ import Verification from './SLV Components/verification';
 import SuperUser from './Superuser/superuser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import SidemailVerification from './Mail-Verification/mailverification';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/verification" element={<Verification/>}/>
         <Route path='/superuser'  element={<SuperUser/>} />
+        <Route path='/Verify' element={<SidemailVerification/>}/>
       </Routes>
     </Router>
   );

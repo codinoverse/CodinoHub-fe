@@ -60,3 +60,14 @@ body{
     gap: 50px;
 
 }
+
+.verification-main-container{
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.078)); /* Gradient for the glossy effect */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(27, 26, 26, 0.142); 
+    backdrop-filter: blur(8px); 
+    padding: 30px;
+    z-index: 1;
+    overflow: hidden; 
+}
