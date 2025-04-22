@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import profileimg from '../assets/profile.png';
 import '../Superuser/profiledropdown.css'
 
+
 const ProfileDropdown = ({ onViewProfile }) => {
     return (
         <div className="dropdown">
             {/* Profile Image as Dropdown Button */}
-            <button 
-                className="btn dropdown-toggle" 
+            <button
+                className="btn dropdown-toggle"
                 id="profileDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"

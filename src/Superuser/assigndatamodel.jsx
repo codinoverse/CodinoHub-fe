@@ -5,8 +5,7 @@ const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
     const [assignment, setAssignment] = useState({
         username: "",
         roleType: "Developer",
-        role: "BE",
-        permission: "Write"
+        role: "BE"
     });
 
     useEffect(() => {
@@ -14,8 +13,7 @@ const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
             setAssignment({
                 username: "",
                 roleType: "Developer",
-                role: "BE",
-                permission: "Write"
+                role: "BE"
             });
         }
     }, [isOpen]);
@@ -77,16 +75,6 @@ const AssignDataModal = ({ isOpen, onClose, users, onAssignUser }) => {
                                         <option value="BE">BE</option>
                                         <option value="FE">FE</option>
                                         <option value="Tester">Tester</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Permission:</label></td>
-                                <td>
-                                    <select name="permission" value={assignment.permission} onChange={handleChange}>
-                                        <option value="Write">Write</option>
-                                        <option value="Read">Read</option>
-                                        <option value="Execute">Execute</option>
                                     </select>
                                 </td>
                             </tr>

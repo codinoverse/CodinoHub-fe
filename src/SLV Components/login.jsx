@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './login.css';
 import './common.css';
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -23,7 +24,6 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting Form", formData);
 
         if (!formData.userType) {
             alert("Please select a user type.");
@@ -31,29 +31,20 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await fetch("http://192.168.1.12:9000/login", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password,
-                    userType: formData.userType
-                })
+            const response = await axios.post("http://192.168.1.12:9000/login", {
+                username: formData.username,
+                password: formData.password,
+                userType: formData.userType
             });
 
-            const data = await response.json();
-            console.log('Login Response Data', data);
+            const data = response.data;
 
-            if (response.ok) {
-                console.log("Login Success:", data);
+            if (response.status === 200) {
                 if (formData.userType === "superuser") {
-                    const superUserResponse = await fetch(`http://192.168.1.12:9000/superUser/getSuperUser?username=${formData.username}`);
-                    const superUserData = await superUserResponse.json();
-                    console.log('SuperUser Data:', superUserData);
+                    const superUserResponse = await axios.get(`http://192.168.1.12:9000/superUser/getSuperUserProfile?username=${formData.username}`);
+                    const superUserData = superUserResponse.data;
 
-                    if (superUserResponse.ok) {
+                    if (superUserResponse.status === 200) {
                         const superUserDetails = {
                             username: superUserData.username,
                             email: superUserData.email,
@@ -65,16 +56,13 @@ const LoginForm = () => {
                         alert(superUserData.message || "Failed to fetch superuser data.");
                     }
                 } else {
-                    localStorage.setItem("userDetails", JSON.stringify({
-                        username: data.username
-                    }));
+                    localStorage.setItem("userDetails", JSON.stringify({ username: data.username }));
                     navigate("/user");
                 }
             } else {
                 alert(data.message || "Login failed.");
             }
         } catch (error) {
-            console.error("Error logging in:", error);
             alert("Something went wrong. Please try again.");
         }
     };
@@ -122,7 +110,6 @@ const LoginForm = () => {
                                     name="userType"
                                     value="superuser"
                                     onChange={handleChange}
-                                    required
                                 />
                                 <label htmlFor="superUser" className="text-white">SuperUser</label>
                             </div>

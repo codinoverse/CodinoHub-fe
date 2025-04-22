@@ -1,5 +1,6 @@
 import React from 'react';
 import "./mailverification.css"
+import { Toast } from 'bootstrap';
 
 function SidemailVerification() {
     return (
@@ -11,7 +12,7 @@ function SidemailVerification() {
                 </div>
                 <p className='thankyou'>Hi, Nived M</p>
                 <p className='verificationText'>To get started, please verify your email address. shorlty you will recieve password</p>
-                <button className='activateButton'>Activate your account</button>
+                <button className='activateButton' onClick={() => Toast("Account Activated")}>Activate your account</button>
                 <p className='didNotCreate'>
                     If you didn't create account with this email address, please let us know.
                 </p>

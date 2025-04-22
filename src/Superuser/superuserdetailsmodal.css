@@ -1,0 +1,72 @@
+.modal.fade.show.d-block {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    overflow-y: auto;
+}
+
+
+.modal-dialog {
+    position: absolute;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    max-width: 900px;
+    width: 100%;
+    z-index: 1060;
+}
+
+.modal-content {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+    padding: 1rem;
+    animation: fadeInScale 0.3s ease;
+}
+
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    background-color: rgb(6, 133, 147);
+    color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1rem 1.5rem;
+}
+
+.table {
+    font-size: 1.05rem;
+}
+
+.table th, .table td {
+    padding: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
+}

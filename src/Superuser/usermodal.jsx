@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserModal.css";
+import { useNavigate } from "react-router-dom"; // if using react-router for redirection
 
 const UserModal = ({ isOpen, onClose, onCreateUser }) => {
     const [user, setUser] = useState({
@@ -9,7 +10,19 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
         email: ""
     });
 
-    const createdBy = JSON.parse(localStorage.getItem('userDetails'))?.username || '';
+    const navigate = useNavigate(); // for redirecting to login
+    const [createdBy, setCreatedBy] = useState("");
+
+    // Get superuser details from localStorage
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem("userDetails"));
+        if (storedUser?.username) {
+            setCreatedBy(storedUser.username);
+        } else {
+            alert("Superuser not found. Please log in again.");
+            navigate("/login"); // redirect to login
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -21,9 +34,10 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
             try {
                 const userData = {
                     ...user,
-                    createdBy: createdBy
+                    createdBy: createdBy,
+                    userType: "USER"
                 };
-                const response = await fetch('http://192.168.1.17:9000/user/createUser', {
+                const response = await fetch('http://192.168.1.12:9000/superUser/createSuperuserAndUser', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -33,7 +47,6 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
                 if (response.ok) {
                     const text = await response.text();
                     let data = {};
-
                     if (text) {
                         try {
                             data = JSON.parse(text);
@@ -48,7 +61,6 @@ const UserModal = ({ isOpen, onClose, onCreateUser }) => {
                         username: "",
                         email: ""
                     });
-
                     onClose();
                 } else {
                     const errorText = await response.text();
