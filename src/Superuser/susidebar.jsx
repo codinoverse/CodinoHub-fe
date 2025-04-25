@@ -7,6 +7,7 @@ import axios from 'axios';
 const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperUser }) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [superusers, setSuperusers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const toggleDropdown = (name) => {
@@ -24,6 +25,18 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
         }
     };
 
+
+    const fetchUsers = async () => {
+        try {
+            const res = await axios.get('http://192.168.1.12:9000/user/getAllUsernames');
+            setUsers(res.data);
+        } catch (error) {
+            console.error("Error  fetching users data", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleSuperUserClick = async (username) => {
         try {
             const res = await axios.get('http://192.168.1.12:9000/superUser/getSuperUser', {
@@ -39,6 +52,7 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
 
     useEffect(() => {
         fetchSuperUsers();
+        fetchUsers();
     }, []);
 
     return (
@@ -79,6 +93,35 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
                 <button className="sidebar-btn " onClick={onCreateUser}>
                     Create User +
                 </button>
+                <div className="dropdown">
+                    <button
+                        className="sidebar-btn dropdown-toggle w-100"
+                        onClick={() => toggleDropdown("users")}
+                    >
+                        Users
+                    </button>
+                    {openDropdown === "users" && (
+                        <ul className="list-group mt-2">
+                            {!loading && users.length > 0 ? (
+                                users.map((user, index) => (
+                                    <li key={index} className="list-group-item list-group-item-action p-1">
+                                        <button
+                                            className="btn  text-start w-100 text-decoration-none"
+                                            onClick={() => handleSuperUserClick(user.username)}
+                                        >
+                                            {user.username}
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="list-group-item text-muted">Users found</li>
+                            )}
+                        </ul>
+                    )}
+                </div>
+
+
+
                 <button className="assign-btn" onClick={onAssignData}>
                     Assign Data
                 </button>

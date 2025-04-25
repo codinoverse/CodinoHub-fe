@@ -29,7 +29,11 @@ const UserDetailsModal = ({ isOpen, onClose, user }) => {
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
                                     <td>{user.companyName}</td>
-                                    <td>{user.status}</td>
+                                    <td>
+                                        <span className={`status-indicator ${user.status === "ACTIVE" ? "active" : "inactive"}`}></span>
+                                        {user.status}
+                                    </td>
+
                                 </tr>
                             </tbody>
                         </table>

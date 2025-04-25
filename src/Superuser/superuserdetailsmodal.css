@@ -70,3 +70,21 @@
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #f2f2f2;
 }
+
+/* Status indicator circle */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.status-indicator.active {
+    background-color: #28a745; /* Green */
+}
+
+.status-indicator.inactive {
+    background-color: #dc3545; /* Red */
+}
