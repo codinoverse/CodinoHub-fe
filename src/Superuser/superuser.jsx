@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./superuser.css";
 import Navbar from "./sunavbar";
@@ -17,44 +17,125 @@ const SuperUser = () => {
     const [users, setUsers] = useState([]);
     const [superusers, setSuperUsers] = useState([]);
     const [assignedUsers, setAssignedUsers] = useState([]);
+    const [roleTypes, setRoleTypes] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [selectedSuperUser, setSelectedSuperUser] = useState(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
     const [userToUpdate, setUserToUpdate] = useState(null);
+    const wsRef = useRef(null);
+    const pollingIntervalRef = useRef(null);
 
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            try {
-                const response = await axios.get("http://192.168.1.12:9000/user/getAssignedUsersDetails");
-                setAssignedUsers(response.data);
-            } catch (error) {
-                console.error("Failed to fetch initial assigned users:", error);
-            }
-        };
+    const fetchAssignedUsers = async () => {
+        try {
+            const response = await axios.get("http://192.168.1.12:9000/user/getAssignedUsersDetails");
+            setAssignedUsers([...response.data]);
+            console.log("Fetched assigned users:", response.data);
+        } catch (error) {
+            console.error("Failed to fetch assigned users:", error);
+        }
+    };
 
-        fetchInitialData();
+    const fetchRoleTypes = async () => {
+        try {
+            const response = await axios.get("http://192.168.1.12:9000/getAllRoleTypes");
+            setRoleTypes([...response.data]);
+            console.log("Fetched role types:", response.data);
+        } catch (error) {
+            console.error("Failed to fetch role types:", error);
+        }
+    };
 
-        const socket = new WebSocket("ws://192.168.1.12:9000/ws/updates");
+    const fetchRoles = async () => {
+        try {
+            const response = await axios.get("http://192.168.1.12:9000/getAllRoles");
+            setRoles([...response.data]);
+            console.log("Fetched roles:", response.data);
+        } catch (error) {
+            console.error("Failed to fetch roles:", error);
+        }
+    };
 
-        socket.onopen = () => {
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get("http://192.168.1.12:9000/user/getAllUsers");
+            setUsers([...response.data]);
+            console.log("Fetched users:", response.data);
+        } catch (error) {
+            console.error("Failed to fetch users:", error);
+        }
+    };
+
+    const connectWebSocket = () => {
+        wsRef.current = new WebSocket("ws://192.168.1.12:9000/ws/updates");
+
+        wsRef.current.onopen = () => {
             console.log("WebSocket connection established");
         };
 
-        socket.onmessage = (event) => {
-            const updatedData = JSON.parse(event.data);
-            console.log("Received update:", updatedData);
-            setAssignedUsers(updatedData);
+        wsRef.current.onmessage = (event) => {
+            try {
+                const updatedData = JSON.parse(event.data);
+                console.log("Received WebSocket update:", updatedData);
+                if (Array.isArray(updatedData)) {
+                    if (updatedData[0]?.type === "assignedUsers") {
+                        setAssignedUsers([...updatedData]);
+                    } else if (updatedData[0]?.type === "roleTypes") {
+                        setRoleTypes([...updatedData]);
+                    } else if (updatedData[0]?.type === "roles") {
+                        setRoles([...updatedData]);
+                    } else if (updatedData[0]?.type === "users") {
+                        setUsers([...updatedData]);
+                    } else {
+                        console.warn("Unknown WebSocket data type:", updatedData);
+                        fetchAssignedUsers();
+                        fetchRoleTypes();
+                        fetchRoles();
+                        fetchUsers();
+                    }
+                } else {
+                    console.warn("Invalid WebSocket data format:", updatedData);
+                    fetchAssignedUsers();
+                    fetchRoleTypes();
+                    fetchRoles();
+                    fetchUsers();
+                }
+            } catch (error) {
+                console.error("Error parsing WebSocket message:", error);
+            }
         };
 
-        socket.onerror = (error) => {
+        wsRef.current.onerror = (error) => {
             console.error("WebSocket error:", error);
         };
 
-        socket.onclose = () => {
-            console.log("WebSocket connection closed");
+        wsRef.current.onclose = () => {
+            console.log("WebSocket connection closed. Reconnecting...");
+            setTimeout(connectWebSocket, 5000);
         };
+    };
 
-        return () => socket.close(); // Cleanup on component unmount
+    useEffect(() => {
+        fetchAssignedUsers();
+        fetchRoleTypes();
+        fetchRoles();
+        fetchUsers();
+        connectWebSocket();
+        pollingIntervalRef.current = setInterval(() => {
+            fetchAssignedUsers();
+            fetchRoleTypes();
+            fetchRoles();
+            fetchUsers();
+        }, 10000);
+
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+            }
+            if (pollingIntervalRef.current) {
+                clearInterval(pollingIntervalRef.current);
+            }
+        };
     }, []);
 
     const handleCreateUser = (user) => setUsers([...users, user]);
@@ -68,6 +149,8 @@ const SuperUser = () => {
                 roleType: assignment.roleType,
                 roleName: assignment.roleName,
             });
+            console.log("User assigned successfully");
+            await fetchAssignedUsers();
         } catch (error) {
             console.error("Error assigning user:", error);
         }
@@ -79,7 +162,9 @@ const SuperUser = () => {
                 roleType: updatedUser.roleType,
                 roleName: updatedUser.roleName,
             });
+            console.log("Role updated successfully");
             setUpdateModalOpen(false);
+            await fetchAssignedUsers();
         } catch (error) {
             console.error("Error updating role:", error.response || error.message);
         }
@@ -99,46 +184,152 @@ const SuperUser = () => {
                         />
                     </div>
                     <div className="col-md-9 col-lg-10 p-4">
-                        <h2>Assigned Users</h2>
-                        {assignedUsers.length > 0 ? (
-                            <div className="assigned-table-container">
-                                <table className="table table-bordered">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>User ID</th>
-                                            <th>Username</th>
-                                            <th>Role Type</th>
-                                            <th>Role</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {assignedUsers.map((assigned) => (
-                                            <tr key={assigned.id}>
-                                                <td>{assigned.id}</td>
-                                                <td>{assigned.username}</td>
-                                                <td>{assigned.roleType}</td>
-                                                <td>{assigned.role}</td>
-                                                <td>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm btn-outline-primary"
-                                                        onClick={() => {
-                                                            setUserToUpdate(assigned);
-                                                            setUpdateModalOpen(true);
-                                                        }}
-                                                    >
-                                                        Update
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                        <h3 className="text-center dashboard-heading">Dashboard</h3>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="col-md-6">
+                                    <h5>Assigned Users Table</h5>
+                                </div>
+                                {assignedUsers.length > 0 ? (
+                                    <div className="assigned-table-container">
+                                        <table className="table table-bordered">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>User ID</th>
+                                                    <th>Username</th>
+                                                    <th>Role Type</th>
+                                                    <th>Role</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {assignedUsers.map((assigned) => (
+                                                    <tr key={assigned.id}>
+                                                        <td>{assigned.id}</td>
+                                                        <td>{assigned.username}</td>
+                                                        <td>{assigned.roleType}</td>
+                                                        <td>{assigned.role}</td>
+                                                        <td>
+                                                            <button
+                                                                type="button"
+                                                                className="update-btn"
+                                                                onClick={() => {
+                                                                    setUserToUpdate(assigned);
+                                                                    setUpdateModalOpen(true);
+                                                                }}
+                                                            >
+                                                                Update
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p>No users assigned yet.</p>
+                                )}
                             </div>
-                        ) : (
-                            <p>No users assigned yet.</p>
-                        )}
+                            <div className="col-md-6">
+                                <div className="col-md-6">
+                                    <h5 className=" mb-4">Users Table</h5>
+                                </div>
+                                {users.length > 0 ? (
+                                    <div className="users-table-container">
+                                        <table className="table table-bordered">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Created By</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {users.map((user) => (
+                                                    <tr key={user.id}>
+                                                        <td>{user.id}</td>
+                                                        <td>{user.firstName}</td>
+                                                        <td>{user.lastName}</td>
+                                                        <td>{user.createdBy}</td>
+                                                        <td>
+                                                            <span
+                                                                className={`badge ${user.status?.toLowerCase() === "active" ? "text-success" : "text-danger"
+                                                                    }`}
+                                                            >
+                                                                ● {user.status}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p>No users available.</p>
+                                )}
+                            </div>
+
+                        </div>
+                        <div className="row mt-4">
+                            <div className="col-md-6">
+                                <h5>Role Table</h5>
+                                {roles.length > 0 ? (
+                                    <div className="role-table-container">
+                                        <table className="table table-bordered">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>Role ID</th>
+                                                    <th>Role Name</th>
+                                                    <th>Description</th>
+                                                    <th>CreatedBy</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {roles.map((role) => (
+                                                    <tr key={role.id}>
+                                                        <td>{role.id}</td>
+                                                        <td>{role.name}</td>
+                                                        <td>{role.description}</td>
+                                                        <td>{role.createdBy}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p>No roles available.</p>
+                                )}
+                            </div>
+                            <div className="col-md-6">
+                                <h5>Role Type Table</h5>
+                                {roleTypes.length > 0 ? (
+                                    <div className="role-type-table-container">
+                                        <table className="table table-bordered">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>Role Type ID</th>
+                                                    <th>Role Type Name</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {roleTypes.map((type) => (
+                                                    <tr key={type.id}>
+                                                        <td>{type.id}</td>
+                                                        <td>{type.name}</td>
+                                                        <td>{type.description}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p>No role types available.</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
