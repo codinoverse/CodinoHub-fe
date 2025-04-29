@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/codinoverse/CodinoHub-fe'
+                git credentialsId: 'github-creds', url: 'https://github.com/mnivedcodinoverse/codinohub-fe1.git'
             }
         }
 
