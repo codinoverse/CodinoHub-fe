@@ -4,9 +4,10 @@ import './signup.css';
 import './common.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignupForm = () => {
-
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -26,24 +27,35 @@ const SignupForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Sending data to backend:", formData);
+
+        const payload = {
+            ...formData,
+            userType: "SUPERUSER"
+        };
+
         try {
-            const response = await axios.post("http://192.168.1.12:9000/superUser/createSuperUser", formData, {
-                headers: {
-                    "Content-Type": "application/json"
+            const response = await axios.post(
+                "http://192.168.1.12:9000/superUser/createSuperuserAndUser",
+                payload,
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 }
-            });
-            console.log("Response status:", response.status);
-            console.log("Response body:", response.data);
-            if (response.status === 200) {
-                alert('User created successfully!');
+            );
+
+            if (response.status >= 200 && response.status < 300) {
+                toast.success('User created successfully!');
                 navigate('/verification', { state: { email: formData.email } });
             } else {
-                alert("Username already exists");
+                toast.error("Unexpected response status: " + response.status);
             }
         } catch (error) {
-            console.error("Error sending request:", error);
-            alert("Something went wrong! Make sure backend is running and accessible.");
+            if (error.response) {
+                toast.error(`Error ${error.response.status}: ${error.response.data?.message || "Internal server error"}`);
+            } else {
+                toast.error("Something went wrong! Check network and backend.");
+            }
         }
     };
 
@@ -129,6 +141,7 @@ const SignupForm = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
