@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./UserModal.css";
+import "./usermodal.css";
 import { useNavigate } from "react-router-dom"; // if using react-router for redirection
 
 const UserModal = ({ isOpen, onClose, onCreateUser }) => {
