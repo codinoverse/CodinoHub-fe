@@ -9,7 +9,6 @@ const ProfileModal = ({ show, onClose }) => {
         company: ""
     });
 
-    // Fetch the user details from localStorage
     useEffect(() => {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         if (userDetails) {

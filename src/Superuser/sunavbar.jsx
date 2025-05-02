@@ -7,10 +7,8 @@ import DropdownSelect from './dropdown';
 import ProfileDropdown from './profiledropdown';
 
 const Navbar = ({ onViewProfile }) => {
-    // Retrieve user details from localStorage
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-    // Default values in case the data is not yet available
     const companyName = userDetails ? userDetails.companyName : "Default Company";
     const username = userDetails ? userDetails.username : "Guest";
 

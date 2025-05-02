@@ -188,7 +188,7 @@ const SuperUser = () => {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="col-md-6">
-                                    <h5>Assigned Users Table</h5>
+                                    <h5>Assigned Users</h5>
                                 </div>
                                 {assignedUsers.length > 0 ? (
                                     <div className="assigned-table-container">
@@ -212,14 +212,15 @@ const SuperUser = () => {
                                                         <td>
                                                             <button
                                                                 type="button"
-                                                                className="update-btn"
+                                                                className="icon-button"
                                                                 onClick={() => {
                                                                     setUserToUpdate(assigned);
                                                                     setUpdateModalOpen(true);
                                                                 }}
                                                             >
-                                                                Update
+                                                                <i className="fas fa-pencil-alt"></i>
                                                             </button>
+
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -232,7 +233,7 @@ const SuperUser = () => {
                             </div>
                             <div className="col-md-6">
                                 <div className="col-md-6">
-                                    <h5 className=" mb-4">Users Table</h5>
+                                    <h5 className=" mb-4">Users</h5>
                                 </div>
                                 {users.length > 0 ? (
                                     <div className="users-table-container">
@@ -274,7 +275,7 @@ const SuperUser = () => {
                         </div>
                         <div className="row mt-4">
                             <div className="col-md-6">
-                                <h5>Role Table</h5>
+                                <h5>Role</h5>
                                 {roles.length > 0 ? (
                                     <div className="role-table-container">
                                         <table className="table table-bordered">
@@ -303,7 +304,7 @@ const SuperUser = () => {
                                 )}
                             </div>
                             <div className="col-md-6">
-                                <h5>Role Type Table</h5>
+                                <h5>Role Type</h5>
                                 {roleTypes.length > 0 ? (
                                     <div className="role-type-table-container">
                                         <table className="table table-bordered">

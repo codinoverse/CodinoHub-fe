@@ -1,106 +1,169 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+.modal-overlay1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-container {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  width: 35vw;
+  min-height: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 1000;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+.modal-container h2 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  color: #222;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.assign-form-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 30px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.assign {
+  background-color: rgb(6, 133, 147);
+  color: white;
+  transition: background 0.3s ease-in;
+}
+
+.assign:hover {
+  background-color: rgb(3, 99, 110);
+  transform: scale(1.2s);
+}
+
+.form-group {
+  min-width: 100px;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+select {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease;
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: #007acc;
+  outline: none;
+  background-color: #fff;
+}
+
+.arrow {
+  font-size: 22px;
+  color: #007acc;
+  margin-top: 20px;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  transition: background 0.25s ease;
+}
+
+
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .modal-container {
-    background-color: #ffffff;
-    padding: 30px 25px;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-in-out;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .modal-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #068593;
-    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .assign-form-flex {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
-  .assign-form-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-15px);
+    opacity: 0;
   }
-  
-  .assign-form-table td {
-    padding: 10px;
-    vertical-align: middle;
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
-  .assign-form-table label {
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .assign-form-table select {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    transition: border-color 0.2s;
-  }
-  
-  .assign-form-table select:focus {
-    outline: none;
-    border-color: #068593;
-  }
-  
-  .modal-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  .modal-actions button {
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s;
-    cursor: pointer;
-  }
-  
-  .modal-actions button[type="submit"] {
-    background-color: #068593;
-    color: white;
-  }
-  
-  .modal-actions button[type="submit"]:hover {
-    background-color: #056c76;
-    transform: scale(1.02);
-  }
-  
-  .modal-actions button[type="button"] {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .modal-actions button[type="button"]:hover {
-    background-color: #ddd;
-    transform: scale(1.02);
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+}
+
+.arrow {
+  font-size: 22px;
+  color: #007acc;
+  margin-top: 20px;
+  user-select: none;
+  animation: slideInRight 0.4s ease forwards;
+}
