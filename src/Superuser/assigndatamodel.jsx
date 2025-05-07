@@ -106,12 +106,12 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
 
     return (
         <div className="modal-overlay1" onClick={onClose}>
-            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-container1" onClick={(e) => e.stopPropagation()}>
                 <button className="close-button" onClick={onClose}>×</button>
-                <h2>Assign Data</h2>
+                <h5 className="text-center assigndata">Assign Data</h5>
                 <form onSubmit={handleSubmit} className="assign-form-flex">
                     {/* User Dropdown */}
-                    <div className="form-group">
+                    <div className="form-group mx-5">
                         <label>User:</label>
                         <select
                             name="username"
@@ -178,8 +178,8 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
                 {/* Buttons only after role is selected */}
                 {assignment.role && (
                     <div className="modal-actions">
-                        <button className="assign" type="submit" onClick={handleSubmit}>Assign</button>
-                        <button type="button" onClick={onClose}>Cancel</button>
+                        <button className="assign" onClick={handleSubmit}>Assign</button>
+                        <button className="cancel" onClick={onClose}>Cancel</button>
                     </div>
                 )}
 

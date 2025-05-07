@@ -11,7 +11,7 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
     const [loading, setLoading] = useState(true);
 
     const toggleDropdown = (name) => {
-        setOpenDropdown((prev) => (prev === name ? null : name)); 
+        setOpenDropdown((prev) => (prev === name ? null : name));
     };
 
     const fetchSuperUsers = async () => {
@@ -56,7 +56,6 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
 
     return (
         <div className="col-md-3 col-lg-2 sidebar-main text-white p-3 min-vh-100">
-            <h5 className="text-center mb-4">User Management</h5>
             <div className="sidebar d-flex flex-column gap-1">
                 {/* SuperUsers Accordion */}
                 <div className="accordion" id="superuserAccordion">
@@ -160,8 +159,90 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
                     </div>
                 </div>
 
+                {/* Teams Accordion */}
+                <div className="accordion" id="teamAccordion">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header d-flex justify-content-between align-items-center">
+                            <button
+                                className="accordion-button collapsed w-100"
+                                type="button"
+                                onClick={() => toggleDropdown("teams")}
+                                aria-expanded={openDropdown === "teams"}
+                            >
+                                Teams
+                            </button>
+                        </h2>
+                        {openDropdown === "teams" && (
+                            <div className="accordion-collapse collapse show">
+                                <div className="accordion-body p-2">
+                                    <ul className="list-group">
+                                        <li className="list-group-item text-muted">
+                                            Developer
+                                        </li><li className="list-group-item text-muted">
+                                            Quality Assurance
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Data
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Security
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Product
+                                        </li><li className="list-group-item text-muted">
+                                            Devops
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Newbee/Intern
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Ai Expert
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Custom Settings Accordion */}
+                <div className="accordion" id="teamAccordion">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header d-flex justify-content-between align-items-center">
+                            <button
+                                className="accordion-button collapsed w-100"
+                                type="button"
+                                onClick={() => toggleDropdown("customs")}
+                                aria-expanded={openDropdown === "customs"}
+                            >
+                                Custom Settings
+                            </button>
+                        </h2>
+                        {openDropdown === "customs" && (
+                            <div className="accordion-collapse collapse show">
+                                <div className="accordion-body p-2">
+                                    <ul className="list-group">
+                                        <li className="list-group-item text-muted">
+                                            Custom Role Type
+                                        </li><li className="list-group-item text-muted">
+                                            Custom Role
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Custom Permission Type
+                                        </li>
+                                        <li className="list-group-item text-muted">
+                                            Custom Team
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+
                 <button className="assign-btn" onClick={onAssignData}>
-                    Assign Data
+                    Configuration
                 </button>
             </div>
         </div>

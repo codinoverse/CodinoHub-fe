@@ -4,7 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const DropdownSelect = () => {
     const [selectedItem, setSelectedItem] = useState("Switch Mode");
-    const options = ["SUPER-USER", "DEVELOPER", "QA", "DATA", "SECURITY", "PRODUCT", "DEVOPS", "NEWBEE/INTERN"];
+    const options = ["SUPER-USER", "DEVELOPER", "QA", "DATA", "SECURITY", "PRODUCT", "DEVOPS", "NEWBEE/INTERN","AI EXPERT","CUSTOM-TEAM"];
 
     const handleSelect = (option) => {
         setSelectedItem(option);

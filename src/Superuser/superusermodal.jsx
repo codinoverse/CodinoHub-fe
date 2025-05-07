@@ -134,10 +134,10 @@ const SuperUserModal = ({ isOpen, onClose }) => {
                         <div key={step.name} className="relative flex items-center justify-center z-10">
                             <div
                                 className={`step-circle w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold ${index < currentStep
-                                        ? "bg-green-500 text-white"
-                                        : index === currentStep
-                                            ? "bg-blue-500 text-white"
-                                            : "bg-white text-gray-600 border border-gray-300"
+                                    ? "bg-green-500 text-white"
+                                    : index === currentStep
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-white text-gray-600 border border-gray-300"
                                     }`}
                             >
                                 {index < currentStep ? (

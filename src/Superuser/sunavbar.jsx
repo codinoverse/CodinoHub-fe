@@ -20,15 +20,17 @@ const Navbar = ({ onViewProfile }) => {
                     <Link to="/" className="logo-link">CodinoHub</Link>
                     <span className="company-name">{companyName}</span>
                 </div>
+                <h5 className="text-center mt-2 mx-5 usermanagement">User Management</h5>
+
 
                 {/* Navbar Toggle */}
-                <button 
-                    className="navbar-toggler" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#navbarNavDropdown" 
-                    aria-controls="navbarNavDropdown" 
-                    aria-expanded="false" 
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
                     aria-label="Toggle navigation"
                 >
                     <span className="navbar-toggler-icon"></span>

@@ -11,19 +11,22 @@
   z-index: 999;
 }
 
-.modal-container {
+.modal-container1 {
   position: relative;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  width: 35vw;
-  min-height: 25vh;
+  width: 150vw;
+  min-height: 30vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   transition: all 0.3s ease;
   overflow: hidden;
+  width: 125vh;
+  max-width: 90%;
 }
+
 
 .close-button {
   position: absolute;
@@ -61,16 +64,7 @@
   width: 100%;
 }
 
-.assign {
-  background-color: rgb(6, 133, 147);
-  color: white;
-  transition: background 0.3s ease-in;
-}
 
-.assign:hover {
-  background-color: rgb(3, 99, 110);
-  transform: scale(1.2s);
-}
 
 .form-group {
   min-width: 100px;
@@ -123,6 +117,30 @@ button {
   transition: background 0.25s ease;
 }
 
+.assign {
+  background-color: #117c91;
+  width: 20px;
+  margin-left: 10px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.assigndata {
+  background-color: rgb(6, 133, 147);
+  padding: 15px;
+  color: white;
+}
+
+.assign:hover {
+  background-color: #0d6170;
+  transform: scale(1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel:hover {
+  background-color: #353d3e;
+  color: white;
+}
 
 
 .fade-in {
