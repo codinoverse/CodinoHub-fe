@@ -5,7 +5,9 @@ import profileimg from '../assets/profile.png';
 import '../Superuser/profiledropdown.css'
 
 
-const ProfileDropdown = ({ onViewProfile }) => {
+const ProfileDropdown = ({ onViewProfile, onSettingsModal }) => {
+   
+      
     return (
         <div className="dropdown">
             {/* Profile Image as Dropdown Button */}
@@ -22,7 +24,7 @@ const ProfileDropdown = ({ onViewProfile }) => {
             {/* Dropdown Menu */}
             <ul className="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="profileDropdown">
                 <li><div className="dropdown-item" onClick={onViewProfile}>VIEW PROFILE</div></li>
-                <li><div className="dropdown-item">SETTINGS</div></li>
+                <li><div className="dropdown-item" onClick={onSettingsModal}>SETTINGS</div></li>
                 <li><Link to="/" className="dropdown-item">LOGOUT</Link></li>
             </ul>
         </div>

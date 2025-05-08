@@ -6,7 +6,7 @@ import Notifications from './notificationdropdown';
 import DropdownSelect from './dropdown';
 import ProfileDropdown from './profiledropdown';
 
-const Navbar = ({ onViewProfile }) => {
+const Navbar = ({ onViewProfile, onSettingsModal }) => {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
     const companyName = userDetails ? userDetails.companyName : "Default Company";
@@ -51,7 +51,7 @@ const Navbar = ({ onViewProfile }) => {
                         </div>
 
                         {/* Profile Dropdown */}
-                        <ProfileDropdown onViewProfile={onViewProfile} />
+                        <ProfileDropdown onViewProfile={onViewProfile} onSettingsModal={onSettingsModal} />
                     </div>
                 </div>
             </div>

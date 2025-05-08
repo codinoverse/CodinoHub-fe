@@ -6,6 +6,7 @@ import Sidebar from "./susidebar";
 import UserModal from "./usermodal";
 import AssignDataModal from "./assigndatamodel";
 import ProfileModal from "./profilemodal";
+import SettingsModal from "./settingmodal";
 import SuperUserModal from "./superusermodal";
 import UserDetailsModal from "./superuserdetailsmodal";
 import UpdateRoleModal from "./updatedRolemodal";
@@ -21,6 +22,7 @@ const SuperUser = () => {
     const [roles, setRoles] = useState([]);
     const [selectedSuperUser, setSelectedSuperUser] = useState(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
     const [userToUpdate, setUserToUpdate] = useState(null);
     const wsRef = useRef(null);
@@ -170,9 +172,19 @@ const SuperUser = () => {
         }
     };
 
+    const handleViewSettingsModal = () => {
+        console.log("Opening Settingsmodal");
+        setShowSettingsModal(true);
+    };
+
+
+
+
     return (
         <>
-            <Navbar onViewProfile={() => setShowProfileModal(true)} />
+            <Navbar onViewProfile={() => setShowProfileModal(true)}
+                onSettingsModal={handleViewSettingsModal}
+            />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-3 col-lg-2 p-0">
@@ -353,6 +365,10 @@ const SuperUser = () => {
             <ProfileModal
                 show={showProfileModal}
                 onClose={() => setShowProfileModal(false)}
+            />
+            <SettingsModal
+                show={showSettingsModal}
+                onClose={() => setShowSettingsModal(false)}
             />
             <UserDetailsModal
                 isOpen={!!selectedSuperUser}

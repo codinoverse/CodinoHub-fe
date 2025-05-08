@@ -1,0 +1,52 @@
+.settings-body {
+    width: 32vh;
+    text-align: left;
+}
+
+.notif-btn,
+.privacy-btn {
+    font-size: 12px;
+}
+
+.notif-btn:hover,
+.privacy-btn:hover {
+    background-color: rgb(6, 133, 147);
+    color: white;
+}
+
+.email-notif,
+.sms-notif,
+.privacy-list {
+    font-size: 10px;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.ed-btn {
+    padding: 5px 5px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.form-check-settings {
+    margin-left: -35px;
+}
+
+.savech-btn {
+    background-color: rgb(6, 133, 147);
+    color: white;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.savech-btn:hover {
+    background-color: rgb(0, 105, 115); /* Darker shade on hover */
+}
+
+.cancelch-btn{
+    background-color: rgba(79, 72, 72, 0.64);
+    color: white;
+}
+
+.cancelch-btn:hover {
+    background-color: rgb(174, 11, 11);
+}
