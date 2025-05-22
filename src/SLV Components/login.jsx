@@ -31,7 +31,10 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await axios.post("http://192.168.1.12:9000/login", {
+
+            const baseURL = import.meta.env.VITE_BASE_URL;
+            const loginURL = `${baseURL}/login`
+            const response = await axios.post(loginURL, {
                 username: formData.username,
                 password: formData.password,
                 userType: formData.userType
@@ -41,7 +44,7 @@ const LoginForm = () => {
 
             if (response.status === 200) {
                 if (formData.userType === "superuser") {
-                    const superUserResponse = await axios.get(`http://192.168.1.12:9000/superUser/getSuperUserProfile?username=${formData.username}`);
+                    const superUserResponse = await axios.get(`${baseURL}/superUser/getSuperUserProfile?username=${formData.username}`);
                     const superUserData = superUserResponse.data;
 
                     if (superUserResponse.status === 200) {

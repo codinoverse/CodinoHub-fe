@@ -18,8 +18,8 @@ const SettingsModal = ({ show, onClose }) => {
 
     return (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-            <div className="modal-dialog modal-lg modal-dialog-centered">
-                <div className="modal-content">
+            <div className="modal-dialog  modal-lg modal-dialog-centered">
+                <div className="modal-content modal-content-settings">
                     <div className="modal-header">
                         <h5 className="modal-title">Settings</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
@@ -27,7 +27,7 @@ const SettingsModal = ({ show, onClose }) => {
                     <div className="modal-body">
                         <div className="accordion settings-body">
                             <div className="accordion-item">
-                                <h2 className="accordion-header">
+                                <h2 className="accordion-header ">
                                     <button
                                         className={`accordion-button notif-btn ${openSection === 'notificationPreferences' ? '' : 'collapsed'}`}
                                         type="button"
@@ -40,15 +40,9 @@ const SettingsModal = ({ show, onClose }) => {
                                     <div className="accordion-collapse">
                                         <div className="accordion-body">
                                             <div className="form-check mb-2">
-                                                <input type="checkbox" className="form-check-input" id="emailNotifications" />
+                                                <input type="checkbox" className="form-check-input email-notification" id="emailNotifications" />
                                                 <label className="form-check-label email-notif" htmlFor="emailNotifications">
                                                     Email Notifications
-                                                </label>
-                                            </div>
-                                            <div className="form-check mb-2">
-                                                <input type="checkbox" className="form-check-input" id="smsNotifications" />
-                                                <label className="form-check-label sms-notif" htmlFor="smsNotifications">
-                                                    SMS Notifications
                                                 </label>
                                             </div>
                                         </div>
@@ -100,21 +94,15 @@ const SettingsModal = ({ show, onClose }) => {
                                     <div className="accordion-collapse">
                                         <div className="accordion-body">
                                             <div className="form-check mb-2">
-                                                <input type="checkbox" className="form-check-input" id="showProfilePicture" />
+                                                <input type="checkbox" className="form-check-input sppto" id="showProfilePicture" />
                                                 <label className="form-check-label privacy-list" htmlFor="showProfilePicture">
                                                     Show Profile Picture to Others
                                                 </label>
                                             </div>
                                             <div className="form-check mb-2">
-                                                <input type="checkbox" className="form-check-input" id="shareActivityStatus" />
+                                                <input type="checkbox" className="form-check-input sas" id="shareActivityStatus" />
                                                 <label className="form-check-label privacy-list" htmlFor="shareActivityStatus">
                                                     Share Activity Status
-                                                </label>
-                                            </div>
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input" id="allowMessagesFromStrangers" />
-                                                <label className="form-check-label privacy-list" htmlFor="allowMessagesFromStrangers">
-                                                    Allow Messages from Strangers
                                                 </label>
                                             </div>
                                         </div>

@@ -129,13 +129,18 @@ h3 {
     padding: 6px;
     border-radius: 4px;
     transition: background 0.2s ease;
-  }
-  
-  .icon-button:hover {
+}
+
+.icon-button:hover {
     background: #f0f0f0;
-  }
-  
+}
+.dashboard {
+    margin-top: 8vh;
+}
+
+
 @media (max-width: 768px) {
+
     .assigned-table-container,
     .role-table-container,
     .role-type-table-container {

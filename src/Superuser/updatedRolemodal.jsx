@@ -1,104 +1,181 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./updatedRolemodal.css";
 
 const UpdateRoleModal = ({ isOpen, onClose, user, onSave }) => {
-    const [roles, setRoles] = useState([]);
-    const [selectedRole, setSelectedRole] = useState("");
+  const [roles, setRoles] = useState([]);
+  const [roleTypes, setRoleTypes] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRoleType, setSelectedRoleType] = useState("");
 
+  useEffect(() => {
+    console.log("UpdateRoleModal props:", { isOpen, user });
+    if (isOpen && user) {
+      fetchRoles();
+      fetchRoleTypes();
+      setSelectedRole(user?.role || "");
+      setSelectedRoleType(user?.roleType || "");
+    }
+  }, [isOpen, user]);
 
-    useEffect(() => {
-        if (isOpen) {
-            fetchRoles();
-            setSelectedRole(user?.role || "");
-        }
-    }, [isOpen, user]);
+  const fetchRoles = async () => {
+    try {
+      const baseURL = import.meta.env.VITE_BASE_URL;
+      const response = await axios.get(`${baseURL}/getAllRoles`);
+      console.log("fetchRoles response:", response.data);
+      setRoles(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
+      setRoles([]);
+    }
+  };
 
+  const fetchRoleTypes = async () => {
+    try {
+      const baseURL = import.meta.env.VITE_BASE_URL;
+      const response = await axios.get(`${baseURL}/getAllRoleTypes`);
+      console.log("fetchRoleTypes response:", response.data);
+      setRoleTypes(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error("Failed to fetch role types:", error);
+      setRoleTypes([]);
+    }
+  };
 
-    const fetchRoles = async () => {
-        try {
-            const response = await axios.get("http://192.168.1.12:9000/getAllRoles");
-            setRoles(response.data);
-        } catch (error) {
-            console.error("Failed to fetch roles:", error);
-        }
+  const handleSave = async () => {
+    if (!selectedRole || !selectedRoleType || !user) {
+      console.error("Save failed: Missing role, role type, or user data.");
+      return;
+    }
+
+    const payload = {
+      id: user.id,
+      roleType: selectedRoleType,
+      roleName: selectedRole,
     };
 
+    try {
+      console.log("Sending payload to backend:", payload);
+      const baseURL = import.meta.env.VITE_BASE_URL;
+      const response = await axios.put(`${baseURL}/user/updateRole/${user.id}`, payload);
+      console.log("Role updated successfully:", response.data);
+      onSave(payload);
+      onClose();
+    } catch (error) {
+      console.error("Failed to update role:", error.response?.data || error.message);
+    }
+  };
 
-    const handleSave = async () => {
-        if (!selectedRole || !user) {
-            console.error("Save failed: No selected role or user data.");
-            return;
-        }
+  if (!isOpen || !user) {
+    console.warn("UpdateRoleModal not rendering - isOpen:", isOpen, "user:", user);
+    return null;
+  }
 
-        const payload = {
-            userId: user.id,
-            roleType: user.roleType,
-            roleName: selectedRole,
-        };
-
-        try {
-            console.log("Sending payload to backend:", payload);
-
-            const response = await axios.post(
-                "http://192.168.1.12:9000/user/assignRoleType/role",
-                payload
-            );
-
-            console.log("Role updated successfully:", response.data);
-
-            onSave();
-            onClose();
-        } catch (error) {
-            console.error("Failed to update role:", error.response?.data || error.message);
-        }
-    };
-
-    if (!isOpen || !user) return null;
-
-    return (
-        <div className="update-role-modal-backdrop show">
-            <div className="update-role-modal">
-                <div className="update-role-modal-content">
-                    <h5 className="update-role-modal-title">Update Role for {user.username}</h5>
-
-                    <div className="update-role-form-group">
-                        <label htmlFor="roleSelect">Select New Role:</label>
-                        <select
-                            id="roleSelect"
-                            className="update-role-form-select"
-                            value={selectedRole}
-                            onChange={(e) => setSelectedRole(e.target.value)}
-                        >
-                            <option value="" disabled>
-                                Select a Role
-                            </option>
-                            {roles.map((role) => (
-                                <option key={role.id} value={role.name}>
-                                    {role.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="update-role-modal-actions">
-                        <button
-                            className="update-role-btn update-role-btn-secondary"
-                            onClick={onClose}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            className="update-role-btn update-role-btn-primary"
-                            onClick={handleSave}
-                        >
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1000,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "5px",
+          minWidth: "300px",
+          maxWidth: "500px",
+          zIndex: 1001,
+        }}
+      >
+        <h5 style={{ marginBottom: "20px" }}>Update Role for {user.username}</h5>
+        <div style={{ marginBottom: "20px" }}>
+          <label htmlFor="roleTypeSelect" style={{ display: "block", marginBottom: "5px" }}>
+            Select Role Type:
+          </label>
+          <select
+            id="roleTypeSelect"
+            value={selectedRoleType}
+            onChange={(e) => setSelectedRoleType(e.target.value)}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px", marginBottom: "10px" }}
+          >
+            <option value="" disabled>
+              Select a Role Type
+            </option>
+            {roleTypes.length > 0 ? (
+              roleTypes.map((type) => (
+                <option key={type.id} value={type.name}>
+                  {type.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>
+                No role types available
+              </option>
+            )}
+          </select>
+          <label htmlFor="roleSelect" style={{ display: "block", marginBottom: "5px" }}>
+            Select Role:
+          </label>
+          <select
+            id="roleSelect"
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px" }}
+          >
+            <option value="" disabled>
+              Select a Role
+            </option>
+            {roles.length > 0 ? (
+              roles.map((role) => (
+                <option key={role.id} value={role.name}>
+                  {role.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>
+                No roles available
+              </option>
+            )}
+          </select>
         </div>
-    );
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+          <button
+            style={{
+              padding: "8px 16px",
+              background: "#ccc",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            style={{
+              padding: "8px 16px",
+              background: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={handleSave}
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default UpdateRoleModal;

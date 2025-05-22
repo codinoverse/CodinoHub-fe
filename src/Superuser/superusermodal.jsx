@@ -87,7 +87,9 @@ const SuperUserModal = ({ isOpen, onClose }) => {
                     userType: "SuperUser"
                 };
 
-                const response = await fetch("http://192.168.1.12:9000/superUser/createSuperuserAndUser", {
+                const baseURL = import.meta.env.VITE_BASE_URL;
+                const createSuperUserURL = baseURL
+                const response = await fetch(`${createSuperUserURL}/superUser/createSuperuserAndUser`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -1,4 +1,3 @@
-import React from "react";
 import './superuserdetailsmodal.css';
 
 const UserDetailsModal = ({ isOpen, onClose, user }) => {

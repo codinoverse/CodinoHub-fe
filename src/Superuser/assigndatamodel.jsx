@@ -24,17 +24,19 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
 
     const fetchDropdownData = async () => {
         try {
+
+            const baseURL = import.meta.env.VITE_BASE_URL;
             const [usersRes, roleTypesRes, rolesRes] = await Promise.all([
-                axios.get("http://192.168.1.12:9000/user/getAllUsernames"),
-                axios.get("http://192.168.1.12:9000/getAllRoleTypes"),
-                axios.get("http://192.168.1.12:9000/getAllRoles")
+                axios.get(`${baseURL}/user/getAllUsernames`),
+                axios.get(`${baseURL}/getAllRoleTypes`),
+                axios.get(`${baseURL}/getAllRoles`)
             ]);
 
             setUsers(usersRes.data || []);
             setRoleTypes(roleTypesRes.data || []);
             setRoles(rolesRes.data || []);
         } catch (err) {
-            console.error("❌ Error fetching dropdown data:", err);
+            console.error(" Error fetching dropdown data:", err);
         }
     };
 
@@ -84,8 +86,9 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
             };
 
             try {
-                await axios.post("http://192.168.1.12:9000/user/assignRoleType/role", payload);
-                alert("✅ Role assigned successfully.");
+                const baseURL = import.meta.env.VITE_BASE_URL;
+                await axios.post(`${baseURL}/user/assignRoleType/role`, payload);
+                alert("Role assigned successfully.");
 
                 onAssignUser({
                     ...payload,
@@ -94,8 +97,8 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
 
                 onClose();
             } catch (error) {
-                console.error("❌ Error assigning role:", error);
-                alert("❌ Failed to assign role: Server error.");
+                console.error("Error assigning role:", error);
+                alert("Failed to assign role: Server error.");
             }
         } else {
             alert("⚠️ Please fill all fields.");

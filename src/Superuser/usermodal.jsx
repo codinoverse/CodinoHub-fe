@@ -87,8 +87,9 @@ const UserModal = ({ isOpen, onClose }) => {
                     createdBy,
                     userType: "user"
                 };
-
-                const response = await fetch("http://192.168.1.12:9000/superUser/createSuperuserAndUser", {
+                const baseURL = import.meta.env.VITE_BASE_URL;
+                const createUSerURL = baseURL;
+                const response = await fetch(`${createUSerURL}/superUser/createSuperuserAndUser`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -134,7 +135,8 @@ const UserModal = ({ isOpen, onClose }) => {
                         <div key={step.name} className="relative flex items-center justify-center z-10">
                             <div className={`step-circle w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold ${index < currentStep ? "bg-green-500 text-white" : index === currentStep ? "bg-green-500 text-white" : "bg-white text-gray-600 border border-gray-300"}`}>
                                 {index < currentStep ? (
-                                    <svg className="w-6 h-6 checkmark"
+                                    <svg
+                                        className="w-6 h-6 checkmark"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"

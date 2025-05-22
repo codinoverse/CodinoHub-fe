@@ -1,14 +1,29 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 import './susidebar.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperUser }) => {
+const Sidebar = ({ onCreateUser,
+    onCreateSuperUser,
+    onAssignData,
+    onCutomAssignData,
+    onSelectSuperUser,
+    onCustomRoleTypeClick,
+    onCustomRoleClick,
+    onCustomPermissionTypeClick,
+    onCustomPermissionClick,
+    onAssignCustomPermissionToCustomRole,
+    onCustomTeamTypeClick,
+    onAssignCustomUserToCustomTeam
+}) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [superusers, setSuperusers] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+
+
 
     const toggleDropdown = (name) => {
         setOpenDropdown((prev) => (prev === name ? null : name));
@@ -16,7 +31,9 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
 
     const fetchSuperUsers = async () => {
         try {
-            const res = await axios.get('http://192.168.1.12:9000/superUser/getAllSuperUsers');
+            const baseURL = import.meta.env.VITE_BASE_URL;
+            const fetchSuperUsersURL = baseURL;
+            const res = await axios.get(`${fetchSuperUsersURL}/superUser/getAllSuperUsers`);
             setSuperusers(res.data);
         } catch (error) {
             console.error("Error fetching superusers:", error);
@@ -27,7 +44,9 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get('http://192.168.1.12:9000/user/getAllUsernames');
+            const baseURL = import.meta.env.VITE_BASE_URL;
+            const fetchUsersURL = baseURL;
+            const res = await axios.get(`${fetchUsersURL}/user/getAllUsernames`);
             setUsers(res.data);
         } catch (error) {
             console.error("Error fetching users data", error);
@@ -38,7 +57,9 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
 
     const handleSuperUserClick = async (username) => {
         try {
-            const res = await axios.get('http://192.168.1.12:9000/superUser/getSuperUser', {
+            const baseURL = import.meta.env.VITE_BASE_URL;
+            const handleSuperUserClickURL = baseURL;
+            const res = await axios.get(`${handleSuperUserClickURL}/superUser/getSuperUser`, {
                 params: { username }
             });
             if (res.data) {
@@ -48,6 +69,7 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
             console.error("Error fetching superuser details:", error);
         }
     };
+
 
     useEffect(() => {
         fetchSuperUsers();
@@ -205,30 +227,42 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
                     </div>
                 </div>
 
-                {/* Custom Settings Accordion */}
                 <div className="accordion" id="teamAccordion">
                     <div className="accordion-item">
                         <h2 className="accordion-header d-flex justify-content-between align-items-center">
                             <button
                                 className="accordion-button collapsed w-100"
                                 type="button"
-                                onClick={() => toggleDropdown("customs")}
-                                aria-expanded={openDropdown === "customs"}
+                                onClick={() => toggleDropdown("customsettings")}
+                                aria-expanded={openDropdown === "customsettings"}
                             >
                                 Custom Settings
                             </button>
                         </h2>
-                        {openDropdown === "customs" && (
+                        {openDropdown === "customsettings" && (
                             <div className="accordion-collapse collapse show">
                                 <div className="accordion-body p-2">
                                     <ul className="list-group">
-                                        <li className="list-group-item text-muted">
+                                        <li className="list-group-item text-muted" onClick={onCustomRoleTypeClick}>
                                             Custom Role Type
-                                        </li><li className="list-group-item text-muted">
+                                        </li>
+                                        <li className="list-group-item text-muted" onClick={onCustomRoleClick}>
                                             Custom Role
                                         </li>
-                                        <li className="list-group-item text-muted">
+                                        <li className="list-group-item text-muted" onClick={onCustomPermissionTypeClick}>
                                             Custom Permission Type
+                                        </li>
+                                        <li className="list-group-item text-muted" onClick={onCustomPermissionClick}>
+                                            Custom Permission
+                                        </li>
+                                        <li className="list-group-item text-muted" onClick={onAssignCustomPermissionToCustomRole}>
+                                            Assign Permission to Role
+                                        </li>
+                                        <li className="list-group-item text-muted" onClick={onCustomTeamTypeClick}>
+                                            Custom Team Type
+                                        </li>
+                                        <li className="list-group-item text-muted" onClick={onAssignCustomUserToCustomTeam}>
+                                            Assign User To Team
                                         </li>
                                         <li className="list-group-item text-muted">
                                             Custom Team
@@ -240,9 +274,11 @@ const Sidebar = ({ onCreateUser, onCreateSuperUser, onAssignData, onSelectSuperU
                     </div>
                 </div>
 
-
                 <button className="assign-btn" onClick={onAssignData}>
                     Configuration
+                </button>
+                <button className="assign-btn" onClick={onCutomAssignData}>
+                    Custom Configuration
                 </button>
             </div>
         </div>

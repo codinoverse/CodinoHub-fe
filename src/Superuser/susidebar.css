@@ -3,6 +3,8 @@
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
   width: auto;
   height: 100%;
+  margin-top: 8vh;
+  position: fixed;
 }
 
 .assign-btn {
@@ -24,7 +26,7 @@
   color: #118896;
 }
 
-.list-group{
+.list-group {
   font-size: 13px;
 }
 
@@ -69,4 +71,24 @@
 .accordion-button:hover {
   border: none;
 
+}
+
+.accordion-body {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  color: black;
+  font-weight: 600;
+}
+
+.plus-btn {
+  color: white;
+  padding: 2px 5px;
+  border-radius: none;
+  background-color: #118896;
+}
+
+.eye-icon {
+  width: 12px;
 }

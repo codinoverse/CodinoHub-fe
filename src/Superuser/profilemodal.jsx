@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import profileimg from "../assets/profile.png";
+import "./profilemodal.css"
 
 const ProfileModal = ({ show, onClose }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -26,11 +27,12 @@ const ProfileModal = ({ show, onClose }) => {
     };
 
     const handleSave = () => {
-        setIsEditing(false); // Exit edit mode after saving
-        localStorage.setItem("userDetails", JSON.stringify(profileData)); // Save the updated details in localStorage
+        setIsEditing(false);
+        localStorage.setItem("userDetails", JSON.stringify(profileData)); 
+        alert("Profile has been updated")
     };
 
-    if (!show) return null; // If not visible, return nothing
+    if (!show) return null; 
 
     return (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
@@ -40,29 +42,29 @@ const ProfileModal = ({ show, onClose }) => {
                         <h5 className="modal-title">Profile Details</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
-                    <div className="modal-body text-center">
+                    <div className="modal-body">
                         <img src={profileimg} className="rounded-circle mb-3" style={{ width: "80px", height: "80px" }} alt="Profile" />
 
                         {/* Name */}
                         {isEditing ? (
-                            <input 
-                                type="text" 
-                                name="name" 
-                                value={profileData.name} 
-                                onChange={handleChange} 
+                            <input
+                                type="text"
+                                name="name"
+                                value={profileData.name}
+                                onChange={handleChange}
                                 className="form-control mb-2"
                             />
                         ) : (
-                            <h5 className="mb-1">{profileData.name}</h5>
+                            <h5 className="mb-3">{profileData.name}</h5>
                         )}
 
                         {/* Email */}
                         {isEditing ? (
-                            <input 
-                                type="email" 
-                                name="email" 
-                                value={profileData.email} 
-                                onChange={handleChange} 
+                            <input
+                                type="email"
+                                name="email"
+                                value={profileData.email}
+                                onChange={handleChange}
                                 className="form-control mb-2"
                             />
                         ) : (
@@ -71,11 +73,11 @@ const ProfileModal = ({ show, onClose }) => {
 
                         {/* Company */}
                         {isEditing ? (
-                            <input 
-                                type="text" 
-                                name="company" 
-                                value={profileData.company} 
-                                onChange={handleChange} 
+                            <input
+                                type="text"
+                                name="company"
+                                value={profileData.company}
+                                onChange={handleChange}
                                 className="form-control mb-2"
                             />
                         ) : (
@@ -86,10 +88,11 @@ const ProfileModal = ({ show, onClose }) => {
                         {isEditing ? (
                             <button className="btn btn-success" onClick={handleSave}>Save</button>
                         ) : (
-                            <button className="btn btn-primary" onClick={() => setIsEditing(true)}>Modify</button>
+                            <button className="modify-btn" onClick={() => setIsEditing(true)}>Modify</button>
                         )}
-                        <button className="btn btn-secondary" onClick={onClose}>Close</button>
+                        <button className="cancelch-btn" onClick={onClose}>Close</button>
                     </div>
+
                 </div>
             </div>
         </div>

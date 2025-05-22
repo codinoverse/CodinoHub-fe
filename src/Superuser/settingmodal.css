@@ -3,15 +3,20 @@
     text-align: left;
 }
 
+.modal-content-settings {
+    height: 65vh;
+}
+
 .notif-btn,
 .privacy-btn {
     font-size: 12px;
+    color: black;
 }
 
 .notif-btn:hover,
 .privacy-btn:hover {
     background-color: rgb(6, 133, 147);
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .email-notif,
@@ -35,18 +40,52 @@
 .savech-btn {
     background-color: rgb(6, 133, 147);
     color: white;
-    transition: background-color 0.3s ease; /* Smooth transition */
+    transition: background-color 0.3s ease;
 }
 
 .savech-btn:hover {
-    background-color: rgb(0, 105, 115); /* Darker shade on hover */
+    background-color: rgb(0, 105, 115);
 }
 
-.cancelch-btn{
+.cancelch-btn {
     background-color: rgba(79, 72, 72, 0.64);
     color: white;
 }
 
 .cancelch-btn:hover {
     background-color: rgb(174, 11, 11);
+}
+
+.email-notification,
+.sppto,
+.sas {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.email-notification:checked,
+.sppto:checked,
+.sas:checked {
+    background-color: rgb(6, 133, 147);
+    border-color: rgb(6, 133, 147);
+}
+
+
+.email-notification:checked::after,
+.sppto::after,
+.sas::after {
+    color: white;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
