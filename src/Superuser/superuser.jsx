@@ -15,8 +15,8 @@ import CustomRoleModal from "../custom-compo/customRoleModal";
 import CustomConfiguration from "./CostomConfiguration";
 import CustomPermissionType from "../custom-compo/customPermissionType";
 import CustomPermission from "../custom-compo/customPermission";
-import CustomTeamType  from "../custom-compo/customTeamType";
-import AssignCustomUserToCustomTeam from "../custom-compo/assignUserToTeam"
+import CustomTeamType from "../custom-compo/customTeamType";
+import AssignCustomUserToCustomTeam from "../custom-compo/assignUserToTeam";
 import AssignCustomPermissionToCustomRole from "../custom-compo/assignCustomPermissionToCustomRole";
 
 const SuperUser = () => {
@@ -42,6 +42,7 @@ const SuperUser = () => {
   const [customPermissionTypes, setCustomPermissionTypes] = useState([]);
   const [customPermissions, setCustomPermissions] = useState([]);
   const [selectedSuperUser, setSelectedSuperUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null); // New state for selected user
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
@@ -202,7 +203,7 @@ const SuperUser = () => {
         try {
           const updatedData = JSON.parse(event.data);
           console.log("Received WebSocket update:", updatedData);
-          if (Array.isArray(updatedData) && updatedData.length > 0 && updatedData[0]?.type) {
+          if (Array.isArray(updatedData) && updatedData[0]?.type) {
             if (updatedData[0].type === "assignedUsers") {
               setAssignedUsers([...updatedData]);
             } else if (updatedData[0].type === "roleTypes") {
@@ -368,27 +369,27 @@ const SuperUser = () => {
 
   const handleOpenAssignCustomUserToCustomTeamModal = () => {
     setAssignCustomUserToCustomTeamModalOpen(true);
-  }
+  };
 
   const handleCloseAssignCustomUserToCustomTeamModal = () => {
     setAssignCustomUserToCustomTeamModalOpen(false);
-  }
+  };
 
   const handleOpenCustomTeamTypeModal = () => {
     setCustomTeamTypeModalOpen(true);
-  }
+  };
 
   const handleCloseCustomTeamTypeModal = () => {
     setCustomTeamTypeModalOpen(false);
-  }
+  };
 
   const handleOpenAssignCustomPermissionToCustomRoleModal = () => {
     setIsAssignCustomPermissionToCustomRoleModalOpen(true);
-  }
+  };
 
   const handleCloseAssignCustomPermissionToCustomRoleModal = () => {
     setIsAssignCustomPermissionToCustomRoleModalOpen(false);
-  }
+  };
 
   const handleCloseCustomPermissionModal = () => {
     setIsCustomPermissionModalOpen(false);
@@ -411,6 +412,11 @@ const SuperUser = () => {
     setSelectedCustomRoleType(null);
   };
 
+  const handleSelectUser = (user) => {
+    console.log("handleSelectUser - Received user:", user); 
+    setSelectedUser(user);
+  };
+
   return (
     <>
       <div>
@@ -429,13 +435,14 @@ const SuperUser = () => {
                 onAssignData={() => setAssignDataModalOpen(true)}
                 onCutomAssignData={() => setCustomAssignedModalOpen(true)}
                 onSelectSuperUser={setSelectedSuperUser}
+                onSelectUser={handleSelectUser} // Pass the callback for user double-click
                 onCustomRoleTypeClick={() => handleOpenCustomRoleTypeModal()}
                 onCustomRoleClick={() => handleOpenCustomRoleModal()}
                 onCustomPermissionTypeClick={() => handleOpenCustomPermissionTypeModal()}
                 onCustomPermissionClick={() => handleOpenCustomPermissionModal()}
-                onAssignCustomPermissionToCustomRole = {() => handleOpenAssignCustomPermissionToCustomRoleModal()}
-                onCustomTeamTypeClick = {() => handleOpenCustomTeamTypeModal()}
-                onAssignCustomUserToCustomTeam = {() => handleOpenAssignCustomUserToCustomTeamModal()}
+                onAssignCustomPermissionToCustomRole={() => handleOpenAssignCustomPermissionToCustomRoleModal()}
+                onCustomTeamTypeClick={() => handleOpenCustomTeamTypeModal()}
+                onAssignCustomUserToCustomTeam={() => handleOpenAssignCustomUserToCustomTeamModal()}
               />
             </div>
           </div>
@@ -745,6 +752,11 @@ const SuperUser = () => {
         onClose={() => setSelectedSuperUser(null)}
         user={selectedSuperUser}
       />
+      <UserDetailsModal
+        isOpen={!!selectedUser}
+        onClose={() => setSelectedUser(null)}
+        user={selectedUser}
+      />
       <CustomPermissionType
         isOpen={isCustomPermissionTypeModalOpen}
         onClose={handleCloseCustomPermissionTypeModal}
@@ -753,11 +765,11 @@ const SuperUser = () => {
         isOpen={isCustomPermissionModalOpen}
         onClose={handleCloseCustomPermissionModal}
       />
-      <CustomTeamType 
+      <CustomTeamType
         isOpen={isCustomTeamTypeModalOpen}
         onClose={handleCloseCustomTeamTypeModal}
       />
-      <AssignCustomPermissionToCustomRole 
+      <AssignCustomPermissionToCustomRole
         isOpen={isAssignCustomPermissionToCustomRoleModalOpen}
         onClose={handleCloseAssignCustomPermissionToCustomRoleModal}
       />
@@ -776,7 +788,7 @@ const SuperUser = () => {
           handleCloseCustomRoleTypeModal();
         }}
       />
-      <AssignCustomUserToCustomTeam 
+      <AssignCustomUserToCustomTeam
         isOpen={isAssignCustomUserToCustomTeamModalOpen}
         onClose={handleCloseAssignCustomUserToCustomTeamModal}
       />

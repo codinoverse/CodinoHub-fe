@@ -1,29 +1,42 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
-import './susidebar.css';
+import "./susidebar.css";
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
+import DeveloperModal from './Teams/DeveloperModal';
+import QAModal from './Teams/QAModal';
+import DevOpsModal from './Teams/DevOpsModal';
+import DataModal from './Teams/DataModal';
+import SecurityModal from './Teams/SecurityModal';
+import ProductModal from './Teams/ProductModal';
+import AIExpertModal from './Teams/AIExpertModal';
 
-const Sidebar = ({ onCreateUser,
+const Sidebar = ({
+    onCreateUser,
     onCreateSuperUser,
     onAssignData,
     onCutomAssignData,
     onSelectSuperUser,
+    onSelectUser,
     onCustomRoleTypeClick,
     onCustomRoleClick,
     onCustomPermissionTypeClick,
     onCustomPermissionClick,
     onAssignCustomPermissionToCustomRole,
     onCustomTeamTypeClick,
-    onAssignCustomUserToCustomTeam
+    onAssignCustomUserToCustomTeam,
 }) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [superusers, setSuperusers] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-
-
+    const [showDeveloperModal, setShowDeveloperModal] = useState(false);
+    const [showQAModal, setShowQAModal] = useState(false);
+    const [showDevOpsModal, setShowDevOpsModal] = useState(false);
+    const [showDataModal, setShowDataModal] = useState(false);
+    const [showSecurityModal, setShowSecurityModal] = useState(false);
+    const [showProductModal, setShowProductModal] = useState(false);
+    const [showAIExpertModal, setShowAIExpertModal] = useState(false);
 
     const toggleDropdown = (name) => {
         setOpenDropdown((prev) => (prev === name ? null : name));
@@ -32,8 +45,7 @@ const Sidebar = ({ onCreateUser,
     const fetchSuperUsers = async () => {
         try {
             const baseURL = import.meta.env.VITE_BASE_URL;
-            const fetchSuperUsersURL = baseURL;
-            const res = await axios.get(`${fetchSuperUsersURL}/superUser/getAllSuperUsers`);
+            const res = await axios.get(`${baseURL}/superUser/getAllSuperUsers`);
             setSuperusers(res.data);
         } catch (error) {
             console.error("Error fetching superusers:", error);
@@ -45,8 +57,8 @@ const Sidebar = ({ onCreateUser,
     const fetchUsers = async () => {
         try {
             const baseURL = import.meta.env.VITE_BASE_URL;
-            const fetchUsersURL = baseURL;
-            const res = await axios.get(`${fetchUsersURL}/user/getAllUsernames`);
+            const res = await axios.get(`${baseURL}/user/getAllUsers`);
+            console.log("Users API response:", res.data); // Debug: Log API response
             setUsers(res.data);
         } catch (error) {
             console.error("Error fetching users data", error);
@@ -58,9 +70,8 @@ const Sidebar = ({ onCreateUser,
     const handleSuperUserClick = async (username) => {
         try {
             const baseURL = import.meta.env.VITE_BASE_URL;
-            const handleSuperUserClickURL = baseURL;
-            const res = await axios.get(`${handleSuperUserClickURL}/superUser/getSuperUser`, {
-                params: { username }
+            const res = await axios.get(`${baseURL}/superUser/getSuperUser`, {
+                params: { username },
             });
             if (res.data) {
                 onSelectSuperUser(res.data);
@@ -71,9 +82,31 @@ const Sidebar = ({ onCreateUser,
     };
 
 
+    const handleUserClick = async (id) => {
+        try {
+            const baseURL = import.meta.env.VITE_BASE_URL;
+            const res = await axios.get(`${baseURL}/user/getUser`, {
+                params: { id },
+            });
+            console.log("handleUserClick - API response:", res.data); 
+            if (res.data) {
+                onSelectUser(res.data);
+                console.log("handleUserClick - Calling onSelectUser with:", res.data); // Debug onSelectUser call
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    };
+
+    const handleUserDoubleClick = (user) => {
+        console.log("handleUserDoubleClick - User:", user); // Debug double-click
+        onSelectUser(user);
+    };
+
     useEffect(() => {
         fetchSuperUsers();
         fetchUsers();
+        console.log("Users state:", users);
     }, []);
 
     return (
@@ -111,9 +144,7 @@ const Sidebar = ({ onCreateUser,
                                                 >
                                                     <button
                                                         className="btn text-start w-100 text-decoration-none"
-                                                        onClick={() =>
-                                                            handleSuperUserClick(superuser.username)
-                                                        }
+                                                        onClick={() => handleSuperUserClick(superuser.username)}
                                                     >
                                                         {superuser.username}
                                                     </button>
@@ -156,19 +187,24 @@ const Sidebar = ({ onCreateUser,
                                 <div className="accordion-body p-2">
                                     <ul className="list-group">
                                         {!loading && users.length > 0 ? (
-                                            users.map((user, index) => (
-                                                <li
-                                                    key={index}
-                                                    className="list-group-item list-group-item-action p-1"
-                                                >
-                                                    <button
-                                                        className="btn text-start w-100 text-decoration-none"
-                                                        onClick={() => handleSuperUserClick(user.username)}
+                                            users
+                                                .filter((user) => user.firstName || user.lastName) // Ensure at least one name field exists
+                                                .map((user, index) => (
+                                                    <li
+                                                        key={index}
+                                                        className="list-group-item list-group-item-action p-1"
                                                     >
-                                                        {user.username}
-                                                    </button>
-                                                </li>
-                                            ))
+                                                        <button
+                                                            className="btn text-start w-100 text-decoration-none text-dark"
+                                                            onClick={() => handleUserClick(user.id)}
+                                                            onDoubleClick={() => handleUserDoubleClick(user)}
+                                                        >
+                                                            {user.firstName && user.lastName
+                                                                ? `${user.firstName} ${user.lastName}`
+                                                                : user.firstName || user.lastName || "Unnamed User"}
+                                                        </button>
+                                                    </li>
+                                                ))
                                         ) : (
                                             <li className="list-group-item text-muted">
                                                 No users found
@@ -182,9 +218,9 @@ const Sidebar = ({ onCreateUser,
                 </div>
 
                 {/* Teams Accordion */}
-                <div className="accordion" id="teamAccordion">
+                <div className="accordion" id="teamsAccordion">
                     <div className="accordion-item">
-                        <h2 className="accordion-header d-flex justify-content-between align-items-center">
+                        <h2 className="accordion-header">
                             <button
                                 className="accordion-button collapsed w-100"
                                 type="button"
@@ -198,27 +234,61 @@ const Sidebar = ({ onCreateUser,
                             <div className="accordion-collapse collapse show">
                                 <div className="accordion-body p-2">
                                     <ul className="list-group">
-                                        <li className="list-group-item text-muted">
-                                            Developer
-                                        </li><li className="list-group-item text-muted">
-                                            Quality Assurance
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowDeveloperModal(true)}
+                                            >
+                                                Developer Team
+                                            </button>
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Data
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowQAModal(true)}
+                                            >
+                                                QA Team
+                                            </button>
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Security
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowDevOpsModal(true)}
+                                            >
+                                                DevOps Team
+                                            </button>
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Product
-                                        </li><li className="list-group-item text-muted">
-                                            Devops
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowDataModal(true)}
+                                            >
+                                                Data Team
+                                            </button>
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Newbee/Intern
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowSecurityModal(true)}
+                                            >
+                                                Security Team
+                                            </button>
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Ai Expert
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowProductModal(true)}
+                                            >
+                                                Product Team
+                                            </button>
+                                        </li>
+                                        <li className="list-group-item list-group-item-action p-1">
+                                            <button
+                                                className="btn text-start w-100 text-decoration-none"
+                                                onClick={() => setShowAIExpertModal(true)}
+                                            >
+                                                AI Expert Team
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -227,7 +297,8 @@ const Sidebar = ({ onCreateUser,
                     </div>
                 </div>
 
-                <div className="accordion" id="teamAccordion">
+                {/* Custom Settings Accordion */}
+                <div className="accordion" id="customSettingsAccordion">
                     <div className="accordion-item">
                         <h2 className="accordion-header d-flex justify-content-between align-items-center">
                             <button
@@ -264,9 +335,7 @@ const Sidebar = ({ onCreateUser,
                                         <li className="list-group-item text-muted" onClick={onAssignCustomUserToCustomTeam}>
                                             Assign User To Team
                                         </li>
-                                        <li className="list-group-item text-muted">
-                                            Custom Team
-                                        </li>
+                                        <li className="list-group-item text-muted">Custom Team</li>
                                     </ul>
                                 </div>
                             </div>
@@ -281,6 +350,36 @@ const Sidebar = ({ onCreateUser,
                     Custom Configuration
                 </button>
             </div>
+
+            {/* Team Modals */}
+            <DeveloperModal 
+                show={showDeveloperModal} 
+                handleClose={() => setShowDeveloperModal(false)} 
+            />
+            <QAModal 
+                show={showQAModal} 
+                handleClose={() => setShowQAModal(false)} 
+            />
+            <DevOpsModal 
+                show={showDevOpsModal} 
+                handleClose={() => setShowDevOpsModal(false)} 
+            />
+            <DataModal 
+                show={showDataModal} 
+                handleClose={() => setShowDataModal(false)} 
+            />
+            <SecurityModal 
+                show={showSecurityModal} 
+                handleClose={() => setShowSecurityModal(false)} 
+            />
+            <ProductModal 
+                show={showProductModal} 
+                handleClose={() => setShowProductModal(false)} 
+            />
+            <AIExpertModal 
+                show={showAIExpertModal} 
+                handleClose={() => setShowAIExpertModal(false)} 
+            />
         </div>
     );
 };
