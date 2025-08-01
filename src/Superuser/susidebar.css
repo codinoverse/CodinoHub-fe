@@ -3,34 +3,33 @@
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
   width: auto;
   height: 100%;
+  margin-top: 8vh;
+  position: fixed;
 }
 
-.assign-btn,
-.sidebar-btn {
-  background-color: transparent;
-  color: #ffffff;
+.assign-btn {
+  background-color: white;
+  color: #118896;
   border: none;
   border-radius: 4px;
-  padding: 5px;
-  width: 13.4em;
+  padding: 4px;
+  width: 14.6em;
+  height: 2.6em;
   text-align: left;
+  font-size: 15px;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
-  padding-left: 25px;
-  border-top-right-radius: 15px;
-  border-bottom-left-radius: 15px;
+  padding-left: 8px;
 }
 
-.sidebar-btn:hover {
-  background-color: #e3f6f8;
-  transform: scale(1.02);
-  color: #04545b;
+.assign-btn:hover {
+  color: #118896;
 }
 
-.sidebar-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(6, 133, 147, 0.3);
+.list-group {
+  font-size: 13px;
 }
+
 
 .dropdown-content {
   margin-top: 5px;
@@ -54,9 +53,42 @@
   background-color: #f1f1f1;
 }
 
+.superuser {
+  background-color: rgb(6, 133, 147);
+  color: white;
+  margin-right: 10px;
+  padding: 4px;
+}
 
 
-.assign-btn:hover {
-  background-color: #ffffff;
-  color: #08404b;
+
+.accordion-button {
+  color: rgb(6, 133, 147);
+  padding: 10px;
+}
+
+
+.accordion-button:hover {
+  border: none;
+
+}
+
+.accordion-body {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  color: black;
+  font-weight: 600;
+}
+
+.plus-btn {
+  color: white;
+  padding: 2px 5px;
+  border-radius: none;
+  background-color: #118896;
+}
+
+.eye-icon {
+  width: 12px;
 }

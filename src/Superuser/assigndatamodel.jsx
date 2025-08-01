@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './assigndatamodel.css';
 
-const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers }) => {
+const AssignDataModal = ({ isOpen, onClose, onAssignUser }) => {
     const [assignment, setAssignment] = useState({
         userId: 0,
         selectedUsername: "",
@@ -24,26 +24,19 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers 
 
     const fetchDropdownData = async () => {
         try {
+
+            const baseURL = import.meta.env.VITE_BASE_URL;
             const [usersRes, roleTypesRes, rolesRes] = await Promise.all([
-                axios.get("http://192.168.1.12:9000/user/getAllUsernames"),
-                axios.get("http://192.168.1.12:9000/getAllRoleTypes"),
-                axios.get("http://192.168.1.12:9000/getAllRoles")
+                axios.get(`${baseURL}/user/getAllUsernames`),
+                axios.get(`${baseURL}/getAllRoleTypes`),
+                axios.get(`${baseURL}/getAllRoles`)
             ]);
 
-            const usersData = usersRes.data || [];
-            setUsers(usersData);
+            setUsers(usersRes.data || []);
             setRoleTypes(roleTypesRes.data || []);
             setRoles(rolesRes.data || []);
-
-            if (usersData.length) {
-                setAssignment((prev) => ({
-                    ...prev,
-                    selectedUsername: usersData[0].username,
-                    userId: usersData[0].id
-                }));
-            }
         } catch (err) {
-            console.error("❌ Error fetching dropdown data:", err);
+            console.error(" Error fetching dropdown data:", err);
         }
     };
 
@@ -62,12 +55,22 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers 
         if (name === "username") {
             const selectedUser = users.find((u) => u.username === value);
             setAssignment({
-                ...assignment,
                 selectedUsername: value,
-                userId: selectedUser?.id || 0
+                userId: selectedUser?.id || 0,
+                roleType: "",
+                role: ""
             });
+        } else if (name === "roleType") {
+            setAssignment((prev) => ({
+                ...prev,
+                roleType: value,
+                role: ""
+            }));
         } else {
-            setAssignment({ ...assignment, [name]: value });
+            setAssignment((prev) => ({
+                ...prev,
+                [name]: value
+            }));
         }
     };
 
@@ -83,10 +86,10 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers 
             };
 
             try {
-                await axios.post("http://192.168.1.12:9000/user/assignRoleType/role", payload);
-                alert("✅ Role assigned successfully.");
+                const baseURL = import.meta.env.VITE_BASE_URL;
+                await axios.post(`${baseURL}/user/assignRoleType/role`, payload);
+                alert("Role assigned successfully.");
 
-                // Update SuperUser assignedUsers table
                 onAssignUser({
                     ...payload,
                     username: selectedUsername
@@ -94,8 +97,8 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers 
 
                 onClose();
             } catch (error) {
-                console.error("❌ Error assigning role:", error);
-                alert("❌ Failed to assign role: Server error.");
+                console.error("Error assigning role:", error);
+                alert("Failed to assign role: Server error.");
             }
         } else {
             alert("⚠️ Please fill all fields.");
@@ -105,69 +108,84 @@ const AssignDataModal = ({ isOpen, onClose, onAssignUser, users: superUserUsers 
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-                <h2>Assign Role</h2>
-                <form onSubmit={handleSubmit}>
-                    <table className="assign-form-table">
-                        <tbody>
-                            <tr>
-                                <td><label>User:</label></td>
-                                <td>
-                                    <select
-                                        name="username"
-                                        value={assignment.selectedUsername}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select User</option>
-                                        {users.map((user) => (
-                                            <option key={user.id} value={user.username}>
-                                                {user.username}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Role Type:</label></td>
-                                <td>
-                                    <select
-                                        name="roleType"
-                                        value={assignment.roleType}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select Role Type</option>
-                                        {roleTypes.map((rt) => (
-                                            <option key={rt.id} value={rt.name}>{rt.name}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Role:</label></td>
-                                <td>
-                                    <select
-                                        name="role"
-                                        value={assignment.role}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select Role</option>
-                                        {roles.map((r) => (
-                                            <option key={r.id} value={r.name}>{r.name}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className="modal-actions">
-                        <button type="submit">Assign</button>
-                        <button type="button" onClick={onClose}>Cancel</button>
+        <div className="modal-overlay1" onClick={onClose}>
+            <div className="modal-container1" onClick={(e) => e.stopPropagation()}>
+                <button className="close-button" onClick={onClose}>×</button>
+                <h5 className="text-center assigndata">Assign Data</h5>
+                <form onSubmit={handleSubmit} className="assign-form-flex">
+                    {/* User Dropdown */}
+                    <div className="form-group mx-5">
+                        <label>User:</label>
+                        <select
+                            name="username"
+                            value={assignment.selectedUsername}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select User</option>
+                            {users.map((user) => (
+                                <option key={user.id} value={user.username}>
+                                    {user.username}
+                                </option>
+                            ))}
+                        </select>
                     </div>
+
+                    {/* Arrow to Role Type */}
+                    {assignment.selectedUsername && (
+                        <>
+                            <div className="arrow">➡</div>
+
+                            {/* Role Type Dropdown */}
+                            <div className="form-group">
+                                <label>Role Type:</label>
+                                <select
+                                    name="roleType"
+                                    value={assignment.roleType}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select Role Type</option>
+                                    {roleTypes.map((rt) => (
+                                        <option key={rt.id} value={rt.name}>{rt.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+                    )}
+
+                    {/* Arrow to Role */}
+                    {assignment.roleType && (
+                        <>
+                            <div className="arrow">➡</div>
+
+                            {/* Role Dropdown */}
+                            <div className="form-group">
+                                <label>Role:</label>
+                                <select
+                                    name="role"
+                                    value={assignment.role}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select Role</option>
+                                    {roles.map((r) => (
+                                        <option key={r.id} value={r.name}>{r.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+                    )}
                 </form>
+
+                {/* Buttons only after role is selected */}
+                {assignment.role && (
+                    <div className="modal-actions">
+                        <button className="assign" onClick={handleSubmit}>Assign</button>
+                        <button className="cancel" onClick={onClose}>Cancel</button>
+                    </div>
+                )}
+
             </div>
         </div>
     );

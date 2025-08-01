@@ -1,94 +1,221 @@
-/* Modal Overlay */
-.modal-overlay {
+.modal-overlay{
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* Slightly lighter background */
+    right: 0;
+    bottom: 0;
+    background-color: none;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
-/* Modal Container */
 .modal-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 600px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    max-height: 80%;
-    overflow-y: auto;
-}
-
-/* Title */
-.modal-container h2 {
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center;
-}
-
-/* Table Style */
-.user-form-table {
-    width: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
-.user-form-table th, .user-form-table td {
-    padding: 12px;
-    text-align: left;
-    vertical-align: middle;
-    color: #444;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Table Header for labels */
-.user-form-table th {
-    font-weight: 600;
-    background-color: #f1f1f1;
-}
-
-/* Input Cells */
-.user-form-table td input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-/* Hover and Focus Effect */
-.user-form-table td input:hover {
-    border-color: #007bff;
     background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.user-form-table td input:focus {
-    border-color: #007bff;
-    background-color: #fff;
+.modal-container h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    background-color: #0c7b8f;
+    padding: 4px;
+    text-align: center;
+    letter-spacing: 0.5px;
 }
 
-/* Action Buttons (Create and Cancel) */
-.modal-actions {
+.stepper-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-bottom: 2rem;
+    position: relative;
+    width: 100%;
 }
 
-.modal-actions button {
-    padding: 10px 16px;
-    border: none;
+.stepper-container > div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step-circle.bg-blue-500 {
+    background-color: #0c7b8f;
+    color: #ffffff;
+}
+
+.step-circle.bg-green-500 {
+    background-color: #0c7b8f;
+    color: #ffffff;
+}
+
+.step-circle.bg-white {
+    background-color: #ffffff;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+}
+
+.connector-line {
+    position: absolute;
+    height: 3px;
+    background-color: #d1d5db;
+    transition: background-color 0.3s ease;
+    top: 15px; 
+}
+
+.connector-line.bg-blue-500 {
+    background-color: #0c7b8f;
+}
+
+.connector-line.bg-gray-300 {
+    background-color: #d1d5db;
+}
+
+.modal-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 1rem;
+    color: #1f2937;
+    background-color: #f9fafb;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-container input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.modal-container label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: block;
+    letter-spacing: 0.5px;
+}
+
+.modal-container button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    width: 48%;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+    text-transform: uppercase;
+}
+
+.modal-container button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-container .bg-gray-300 {
+    background-color: #d1d5db;
+    color: #1f2937;
+}
+
+.modal-container .bg-gray-300:hover {
+    background-color: #b3b7c1;
+}
+
+.modal-container .bg-blue-600 {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.modal-container .bg-blue-600:hover {
+    background-color: #1d4ed8;
+}
+
+.modal-container .bg-red-600 {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.modal-container .bg-red-600:hover {
+    background-color: #b91c1c;
+}
+
+.modal-container .flex.justify-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+}
+
+.create-btn,
+.next-btn {
+    background-color: #0d8499;
+    color: white;
+    width: 100px;
+}
+
+.cancel-btn {
+    background-color: rgba(199, 13, 13, 0.893);
+    color: white;
 }
 
 
+
+
+@media (max-width: 640px) {
+    .modal-container {
+        margin: 0 16px;
+        padding: 16px;
+    }
+
+    .modal-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .step-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .checkmark {
+        width: 20px;
+        height: 20px;
+    }
+
+    .connector-line {
+        top: 14px; /* Adjust for smaller circles */
+    }
+}

@@ -1,17 +1,23 @@
-.modal {
-    background: rgba(0, 0, 0, 0.5); 
+.modify-btn {
+    background-color: rgb(6, 133, 147);
+    color: white;
 }
 
-.modal-dialog {
-    max-width: 400px;
-}
-
-.modal-content {
-    border-radius: 10px;
-    overflow: hidden;
+.modify-btn:hover {
+    background-color: rgb(21, 90, 98);
+    color: white;
 }
 
 .modal-footer {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.modify-btn {
+    margin-right: auto;
+}
+
+.cancelch-btn {
+    margin-left: auto;
 }

@@ -34,8 +34,10 @@ const SignupForm = () => {
         };
 
         try {
-            const response = await axios.post(
-                "http://192.168.1.12:9000/superUser/createSuperuserAndUser",
+            const baseURL = import.meta.env.VITE_BASE_URL;
+
+            const signupURL = `${baseURL}/superUser/createSuperuserAndUser`
+            const response = await axios.post(signupURL,
                 payload,
                 {
                     headers: {

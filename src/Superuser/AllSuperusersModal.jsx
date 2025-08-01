@@ -1,4 +1,3 @@
-import React from 'react';
 import './AllSuperusersModal.css';
 
 const AllSuperusersModal = ({ isOpen, onClose, superUser }) => {
